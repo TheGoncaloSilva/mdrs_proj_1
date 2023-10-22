@@ -1,14 +1,17 @@
 C = [10,20,30,40];
 APD = zeros(length(C), 2);
 for i=1:length(C)
-    APD(i,:) = average_packet_delay(C(i));
+    [APD(i,1), APD(i,2)] = average_packet_delay(C(i));
+    fprintf('For C=%dMdps, the Av. Packet Delay (ms)  = %.2e +- %.2e\n', C(i), APD(i,1), APD(i,2))
 end
 
 bar(C,APD(:,1));
 hold on
+xlabel = 'Capacity (Mbps)';
+ylabel = 'Avg Packet Delay (ms)';
 er = errorbar(C,APD(:,1),APD(:,2),APD(:,2));    
 er.Color = [0 0 0];                            
-er.LineStyle = 'none';  
+er.LineStyle = 'none';
 hold off
 
 function [avg,trust]=average_packet_delay(capacity)
