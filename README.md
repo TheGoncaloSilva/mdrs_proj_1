@@ -55,10 +55,10 @@ The generated Bar plot is present in the image bellow. Take into account that th
 The recorded values in the terminal were:
 
 ```text
-For C=10Mdps, the Av. Packet Delay (ms)  = 4.34e+00 +- 7.20e-02
-For C=20Mdps, the Av. Packet Delay (ms)  = 4.36e-01 +- 1.08e-03
-For C=30Mdps, the Av. Packet Delay (ms)  = 2.31e-01 +- 3.60e-04
-For C=40Mdps, the Av. Packet Delay (ms)  = 1.57e-01 +- 2.45e-04
+For C=10Mdps, the Av. Packet Delay (ms)  = 4.46e+00 +- 1.01e-01
+For C=20Mdps, the Av. Packet Delay (ms)  = 4.35e-01 +- 1.31e-03
+For C=30Mdps, the Av. Packet Delay (ms)  = 2.31e-01 +- 4.41e-04
+For C=40Mdps, the Av. Packet Delay (ms)  = 1.57e-01 +- 2.52e-04
 ```
 
 ### Conclusion
@@ -222,6 +222,33 @@ errorbar(1:length(lambda_values), average_throughput_sim2, average_throughput_si
 ### Result
 
 ![Exercise 1.d image](./task1/images/ex_1d.jpg)
+
+## Exercise 1.e
+### Code
+
+Considering the same packet size as present in the Simulators, just the new probabilities, we just needed to modify the *GeneratePacketSize* function in both the simulators.
+
+```matlab
+function out= GeneratePacketSize()
+    aux= rand();
+    aux2= [65:109 111:1517];
+    if aux <= 0.25
+        out= 64;
+    elseif aux <= 0.25 + 0.17
+        out= 110;
+    elseif aux <= 0.25 + 0.17 + 0.11
+        out= 1518;
+    else
+        out = aux2(randi(length(aux2)));
+    end
+end
+```
+
+### Result
+
+![Exercise 1.e value of 1.c](./task1/images/ex_1e-c.jpg)
+
+![Exercise 1.e value of 1.d](./task1/images/ex_1e-d.jpg)
 
 ### Conclusion
 
