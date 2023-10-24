@@ -10,8 +10,7 @@ hold on
 title('Avg Packet Delay according to link capacity');
 xlabel('Capacity (Mbps)');
 ylabel('Avg Packet Delay (ms)');
-er = errorbar(C,APD(:,1),APD(:,2),APD(:,2));    
-er.Color = [0 0 0];                            
+er = errorbar(C,APD(:,1),APD(:,2),APD(:,2), 'r.');                               
 er.LineStyle = 'none';
 hold off
 

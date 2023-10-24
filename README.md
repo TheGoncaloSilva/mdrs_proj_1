@@ -23,7 +23,7 @@ bar(C,APD(:,1));
 hold on
 xlabel = 'Capacity (Mbps)';
 ylabel = 'Avg Packet Delay (ms)';
-er = errorbar(C,APD(:,1),APD(:,2),APD(:,2));  
+er = errorbar(C,APD(:,1),APD(:,2),APD(:,2), 'r.');  
 er.Color = [0 0 0];                        
 er.LineStyle = 'none';
 hold off
