@@ -1,9 +1,9 @@
-%% EXERCISE 1.c)
-
 C = 10;              % Link bandwidth (Mbps)
 f = 1e6;             % Queue size (Bytes)
 P = 1e5;             % Stopping criterion (number of packets)
 lambda_values = [1000, 1300, 1600, 1900];  % Packet arrival rate (pps)
+
+N = 20; % Number of simulations
 
 % Vectors to store the results
 average_packet_delay = zeros(length(lambda_values), 1);
@@ -11,25 +11,34 @@ average_throughput = zeros(length(lambda_values), 1);
 confidence_intervals_delay = zeros(length(lambda_values), 2);
 confidence_intervals_throughput = zeros(length(lambda_values), 2);
 
-% Run the simulator 20 times for each lambda value
 for i = 1:length(lambda_values)
     lambda = lambda_values(i);
-    num_simulations = 20;
-    delays = zeros(num_simulations, 1);
-    throughputs = zeros(num_simulations, 1);
     
-    for j = 1:num_simulations
+    % Create vectors to store results of simulations
+    delays = zeros(N, 1);
+    throughputs = zeros(N, 1);
+    
+    for j = 1:N
         [PL, APD, ~, TT] = Simulator1(lambda, C, f, P);
         delays(j) = APD;
         throughputs(j) = TT;
     end
     
-    % Calculate the mean and 90% confidence interval
-    average_packet_delay(i) = mean(delays);
-    confidence_intervals_delay(i, :) = prctile(delays, [5, 95]);
+    % Calculate the mean and confidence interval for delay
+    media = mean(delays);
+    term = norminv(0.95) * sqrt(var(delays) / N);
+    fprintf('Average Packet Delay for lambda = %d: %.2f +- %.2f\n', lambda, media, term);
     
-    average_throughput(i) = mean(throughputs);
-    confidence_intervals_throughput(i, :) = prctile(throughputs, [5, 95]);
+    average_packet_delay(i) = media;
+    confidence_intervals_delay(i, :) = [media - term, media + term];
+    
+    % Calculate the mean and confidence interval for throughput
+    media = mean(throughputs);
+    term = norminv(0.95) * sqrt(var(throughputs) / N);
+    fprintf('Average Throughput for lambda = %d: %.2f +- %.2f\n', lambda, media, term);
+    
+    average_throughput(i) = media;
+    confidence_intervals_throughput(i, :) = [media - term, media + term];
 end
 
 % Bar Charts
