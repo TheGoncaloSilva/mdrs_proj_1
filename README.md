@@ -24,7 +24,7 @@ hold on
 xlabel = 'Capacity (Mbps)';
 ylabel = 'Avg Packet Delay (ms)';
 er = errorbar(C,APD(:,1),APD(:,2),APD(:,2), 'r.');  
-er.Color = [0 0 0];                        
+er.Color = [0 0 0];                    
 er.LineStyle = 'none';
 hold off
 
@@ -71,33 +71,165 @@ In summary, the effect of increasing link capacity and it's impact in average pa
 
 Before calculating the Average Packet delay for all link capacities, we need to introduces some formulas and values:
 
-* Mean Service time:
+* The Mean Service time is calculated by the heavy average of packet size divided by the link capacity ($C$), with $S=packet\_size$ **in bytes** and $P=packet\_probability$ expressed $[0,1]$:
   $$
-  E[S]=\frac{1}{C}
+  E[S]=\sum_{i=1}^\infty\frac{ S_i }{C}\times P_i
   $$
 * Second moment of the Service time (or Variance of the service time):
   $$
-  E[S²]=\frac{1}{C²}
+  E[S²]=\sum_{i=1}^\infty\frac{S_i²}{C}\times P_i
   $$
-* The *Pollaczek-Khinchine* formula is used to calculate the average waiting time (WQ) in an M/G/1 queue:
+* The *Pollaczek-Khinchine* formula is used to calculate the average waiting time (WQ) **in an M/G/1 queue**:
   $$
   W_Q = \frac{\lambda E[S]}{2(1 - \lambda E[S])}
   $$
+* With the *Pollaczek-Khinchine* formula we can calculate the average packet delay as:
+  $$
+  W = W_q + E[S]
+  $$
 * $\lambda = 1800$pps (Packets Per Second)
 
-With this formulas in mind, let's calculate the Average Packet delay for each Capacity is calculated is as follows.
+With this formulas in mind and with the help of Matlab, we'll proceed in calculating the Average Packet delay for each Capacity:
+
 * For $C=10$:
-$$
-  W_Q = \frac{1800 \times 10^{-12}}{2(1 - 0.0018)}
-    = \frac{18 \times 10^{-10}}{2(0.9982)}
-$$
-$$
-    = \frac{18 \times 10^{-10}}{1,9964} 
-    \equiv 9.0162 \times 10^{-10} \equiv 0.90162 (ns)
-$$ 
 
-(...)**VERIFICAR ESTES VALORES** 
+$$
+W_Q = \frac{\lambda E[S]}{2(1 - \lambda E[S])}
+ = \frac{1800 \times 4.96 \times  10^{-4}}{2(1 - 1800 \times 4.96 \times  10^{-4})}
+ = 3.8923(ms)
+$$
 
+$$
+W = W_Q + E[S]
+ = 3.8923 + 4.96 \times  10^{-4}
+$$
+
+$$
+\equiv W = 4.3883 \text{ ms}
+$$
+
+* For $C=20$:
+
+$$
+W_Q = \frac{1800 \times 2.48 \times 10^{-4}}{2(1 - 1800 \times 2.48 \times 10^{-4})} = 0.1884 \text{ ms}
+$$
+
+$$
+W = W_Q +E[S] = 0.1884 + 2.48 \times 10^{-4}
+$$
+
+$$
+\equiv W = 0.4364 \text{ ms}
+$$
+
+* For $C=30$:
+
+$$
+W_Q = \frac{1800 \times 2.48 \times 10^{-4}}{2(1 - 1800 \times 2.48 \times 10^{-4})} = 0.0660 \text{ ms}
+$$
+
+$$
+W = W_Q + E[S] = 0.1884 + 1.65 \times 10^{-4}
+$$
+
+$$
+\equiv W = 0.2313 \text{ ms}
+$$
+
+* For $C=40$:
+
+$$
+W_Q = \frac{1800 \times 1.24 \times 10^{-4}}{2(1 - 1800 \times 1.24 \times 10^{-4})} = 0.0336 \text{ ms}
+$$
+
+$$
+W = W_Q + E[S] = 0.0336 + 1.24 \times 10^{-4}
+$$
+
+$$
+\equiv W =  0.1576 \text{ ms}
+$$
+
+### Matlab Script code and results
+
+```matlab
+C = [10,20,30,40]; % Mbps
+
+for i=1:length(C)
+    capacity = C(i)*10^6;
+    fprintf('For C=%d:\n', C(i));
+    prob_left = (1 - (0.19 + 0.23 + 0.17)) / ((109 - 65 + 1) + (1517 - 111 + 1));
+    avg_bytes = 0.19*64 + 0.23*110 + 0.17*1518 + sum((65:109)*(prob_left)) + sum((111:1517)*(prob_left));
+    avg_time = avg_bytes * 8 / capacity;
+ 
+    fprintf("\tAverage packet size is: %.2f Bytes\n", avg_bytes);
+    fprintf("\tAverage packet trasmission time is: %.2e seconds\n", avg_time);
+    x = 64:1518;
+    s = (x .* 8) ./ (capacity);
+    s2 = (x .* 8) ./ (capacity);
+    for i = 1:length(x)
+        if i == 1
+            s(i) = s(i) * 0.19;
+            s2(i) = s2(i)^2 * 0.19;
+        elseif i == 110-64+1
+            s(i) = s(i) * 0.23;
+            s2(i) = s2(i)^2 * 0.23;
+        elseif i == 1518-64+1
+            s(i) = s(i) * 0.17;
+            s2(i) = s2(i)^2 * 0.17;
+        else
+            s(i) = s(i) * prob_left;
+            s2(i) = s2(i)^2 * prob_left;
+        end
+    end
+  
+    Es = sum(s);
+    Es2 = sum(s2);
+
+    fprintf('\tE[S] = %.2e seconds\n', Es);
+    fprintf('\tE[S2] = %.2e seconds\n', Es2);
+  
+    Wq = (K * Es2) / (2 * (1 - K * Es));
+    W = Wq + Es;% W = Wq + E[s]
+    fprintf('\tWq = %.4f ms\n', Wq*1000);
+    fprintf('\tW = %.4f ms\n', W*1000);
+
+end
+```
+
+The script originated the following terminal output:
+
+```text
+For C=10:
+	Average packet size is: 620.02 Bytes
+	Average packet trasmission time is: 4.96e-04 seconds
+	E[S] = 4.96e-04 seconds
+	E[S2] = 4.63e-07 seconds
+	Wq = 3.8923 ms
+	W = 4.3883 ms
+For C=20:
+	Average packet size is: 620.02 Bytes
+	Average packet trasmission time is: 2.48e-04 seconds
+	E[S] = 2.48e-04 seconds
+	E[S2] = 1.16e-07 seconds
+	Wq = 0.1884 ms
+	W = 0.4364 ms
+For C=30:
+	Average packet size is: 620.02 Bytes
+	Average packet trasmission time is: 1.65e-04 seconds
+	E[S] = 1.65e-04 seconds
+	E[S2] = 5.15e-08 seconds
+	Wq = 0.0660 ms
+	W = 0.2313 ms
+For C=40:
+	Average packet size is: 620.02 Bytes
+	Average packet trasmission time is: 1.24e-04 seconds
+	E[S] = 1.24e-04 seconds
+	E[S2] = 2.90e-08 seconds
+	Wq = 0.0336 ms
+	W = 0.1576 ms
+
+```
 
 ## Exercise 1.c
 
@@ -224,6 +356,7 @@ errorbar(1:length(lambda_values), average_throughput_sim2, average_throughput_si
 ![Exercise 1.d image](./task1/images/ex_1d.jpg)
 
 ## Exercise 1.e
+
 ### Code
 
 Considering the same packet size as present in the Simulators, just the new probabilities, we just needed to modify the *GeneratePacketSize* function in both the simulators.
