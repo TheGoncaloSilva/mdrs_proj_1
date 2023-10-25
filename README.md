@@ -96,7 +96,7 @@ With this formulas in mind and with the help of Matlab, we'll proceed in calcula
 $$
 W_Q = \frac{\lambda E[S]}{2(1 - \lambda E[S])}
  = \frac{1800 \times 4.96 \times  10^{-4}}{2(1 - 1800 \times 4.96 \times  10^{-4})}
- = 3.8923(ms)
+ = 3.8923 \text{ ms}
 $$
 
 $$
