@@ -24,7 +24,7 @@ hold on
 xlabel = 'Capacity (Mbps)';
 ylabel = 'Avg Packet Delay (ms)';
 er = errorbar(C,APD(:,1),APD(:,2),APD(:,2), 'r.');  
-er.Color = [0 0 0];                    
+er.Color = [0 0 0];                  
 er.LineStyle = 'none';
 hold off
 
@@ -119,7 +119,7 @@ W = W_Q +E[S] = 0.1884 + 2.48 \times 10^{-4}
 $$
 
 $$
-\equiv W = 0.4364 \text{ ms}
+\equiv W = 0.4364 \text{ ms} = 4.364 \times 10^{-1} \text{ ms}
 $$
 
 * For $C=30$:
@@ -133,7 +133,7 @@ W = W_Q + E[S] = 0.1884 + 1.65 \times 10^{-4}
 $$
 
 $$
-\equiv W = 0.2313 \text{ ms}
+\equiv W = 0.2313 \text{ ms} = 2.313 \times 10^{-1} \text{ ms}
 $$
 
 * For $C=40$:
@@ -147,10 +147,15 @@ W = W_Q + E[S] = 0.0336 + 1.24 \times 10^{-4}
 $$
 
 $$
-\equiv W =  0.1576 \text{ ms}
+\equiv W =  0.1576 \text{ ms} = 1.576 \times 10^{-1} \text{ ms}
 $$
 
-### Matlab Script code and results
+### Conclusion:
+
+Analyzing the resulting data indicates that as link capacity is increased, the Average Packet Transmission time is decreased, resulting in lower queueing delays ($W_q$) and Average Packet Delay ($W$). 
+The theoretical results obtained are very similar with what was achieved on the Simulation performed in exercise 1.a. Although the Simulation uses a more real-world approach on obtaining the data, it comes at a cost of performance. The Theoretical approach using the **M/G/1 model** is processed almost instantly and since the obtained values are very close, we can use them when decision making, instead of always needing to simulate the use-cases.
+
+### Matlab Script code and output
 
 ```matlab
 C = [10,20,30,40]; % Mbps
