@@ -1,4 +1,4 @@
-function [PLdata, PLvoip , APDdata, APDvoip , MPDdata, MPDvoip , TT] = Simulator3(lambda,C,f,P,n)
+function [PLdata, PLvoip , APDdata, APDvoip , AQDdata, AQDvoip, MPDdata, MPDvoip , TT] = Simulator3(lambda,C,f,P,n)
 % INPUT PARAMETERS:
 %  lambda - packet rate (packets/sec)
 %  C      - link bandwidth (Mbps)
@@ -39,6 +39,8 @@ DELAYSdata= 0;             % Sum of the DELAYS of transmitted data packets
 DELAYSvoip= 0;             % Sum of the DELAYSdata of transmitted voip packets
 MAXDELAYdata= 0;           % Maximum delay among all transmitted data packets
 MAXDELAYvoip= 0;           % Maximum delay among all transmitted voip packets
+TotalQueuingDelayData= 0;
+TotalQueuingDelayVoip= 0;
 
 % Initializing the simulation clock:
 Clock= 0;
@@ -104,6 +106,11 @@ while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping
         end
         
         if QUEUEOCCUPATION > 0
+            if QUEUE(1,3) == VOIP
+                TotalQueuingDelayVoip = TotalQueuingDelayVoip + (Clock - QUEUE(1,2));
+            else
+                TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
+            end
             Event_List = [Event_List; DEPARTURE, Clock + 8*QUEUE(1,1)/(C*10^6), QUEUE(1,1), QUEUE(1,2), QUEUE(1,3)];
             QUEUEOCCUPATION= QUEUEOCCUPATION - QUEUE(1,1);
             QUEUE(1,:)= [];
@@ -118,6 +125,8 @@ PLdata= 100*LOSTPACKETSdata/TOTALPACKETSdata;      % in %
 PLvoip= 100*LOSTPACKETSvoip/TOTALPACKETSvoip;      % in %
 APDdata= 1000*DELAYSdata/TRANSMITTEDPACKETSdata;   % in milliseconds
 APDvoip= 1000*DELAYSvoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
+AQDdata= 1000*TotalQueuingDelayData/TRANSMITTEDPACKETSvoip;   % in milliseconds
+AQDvoip= 1000*TotalQueuingDelayVoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
 MPDdata= 1000*MAXDELAYdata;                    % in milliseconds
 MPDvoip= 1000*MAXDELAYvoip;                    % in milliseconds
 TT= 10^(-6)*TRANSMITTEDBYTES*8/Clock;  % in Mbps

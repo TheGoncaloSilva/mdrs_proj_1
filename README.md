@@ -51,7 +51,10 @@ end
 
 The generated Bar plot is present in the image bellow. Take into account that the y-axis is the Average Packet delay (ms) and the x-axis, the Capacity (Mbps). The Confidence Interval with `C > 10` isn't clearly visible in the image due to the fact that the values are very small, so not easily visible.
 
-![Exercise 1.a image](./task1/images/ex_1a.jpg)
+<div style="text-align:center;">
+  <img src="./task1/images/ex_1a.jpg" alt="Your Image" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
+</div>
+
 The recorded values in the terminal were:
 
 ```text
@@ -389,6 +392,115 @@ end
 ![Exercise 1.e value of 1.d](./task1/images/ex_1e-d.jpg)
 
 ### Conclusion
+
+## Exercise 2.a
+
+### Modifications or insertions in the code
+The following modifications were made in the Simulator:
+```matlab
+function [PLdata, PLvoip , APDdata, APDvoip , AQDdata, AQDvoip, MPDdata, MPDvoip , TT] = Simulator3(lambda,C,f,P,n)
+(...)
+MAXDELAYvoip= 0;           % Maximum delay among all transmitted voip packets
+TotalQueuingDelayData= 0;
+TotalQueuingDelayVoip= 0;
+
+% Initializing the simulation clock:
+Clock= 0;
+(...)
+
+while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping criterium
+    (...)               % Eliminate first event
+    if Event == ARRIVAL         % If first event is an ARRIVAL
+        (...)
+    else                        % If first event is a DEPARTURE
+        (...)
+        
+        if QUEUEOCCUPATION > 0
+            if QUEUE(1,3) == VOIP
+                TotalQueuingDelayVoip = TotalQueuingDelayVoip + (Clock - QUEUE(1,2));
+            else
+                TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
+            end
+            Event_List = [Event_List; DEPARTURE, Clock + 8*QUEUE(1,1)/(C*10^6), QUEUE(1,1), QUEUE(1,2), QUEUE(1,3)];
+            QUEUEOCCUPATION= QUEUEOCCUPATION - QUEUE(1,1);
+            QUEUE(1,:)= [];
+        else
+            STATE= 0;
+        end
+    end
+end
+
+(...)
+APDvoip= 1000*DELAYSvoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
+AQDdata= 1000*TotalQueuingDelayData/TRANSMITTEDPACKETSvoip;   % in milliseconds
+AQDvoip= 1000*TotalQueuingDelayVoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
+MPDdata= 1000*MAXDELAYdata;                    % in milliseconds
+(...)
+```
+In the script to launch the Simulator, we just want to point out the function that accepts the modifiable n VoIP flow numbers and calculates all the necessary attributes:
+```matlab
+function [avg_data,trust_data, avg_voip, trust_voip, avg_queue_data, trust_queue_data, avg_queue_voip, trust_queue_voip]=average_packet_delay(n)
+    Iter = 20;         %number of simulations
+    Lambda = 1800;  %pps
+    F = 1000000;    %Bytes
+    P = 100000;
+    C = 10;
+    PLdata = zeros(1,Iter); %vector with N simulation values
+    PLvoip = zeros(1,Iter); %vector with N simulation values
+    APDdata = zeros(1,Iter); %vector with N simulation values
+    APDvoip = zeros(1,Iter); %vector with N simulation values
+    AQDdata = zeros(1,Iter); %vector with N simulation values
+    AQDvoip = zeros(1,Iter); %vector with N simulation values
+    MPDdata = zeros(1,Iter); %vector with N simulation values
+    MPDvoip = zeros(1,Iter); %vector with N simulation values
+    TT = zeros(1,Iter); %vector with N simulation values
+    
+    for it= 1:Iter
+        [PLdata(it),PLvoip(it),APDdata(it),APDvoip(it),AQDdata(it),AQDvoip(it),MPDdata(it),MPDvoip(it),TT(it)] = Simulator3(Lambda, C, F, P, n);
+    end
+    alfa= 0.1; % 90% confidence interval %
+    avg_data = mean(APDdata);
+    trust_data = norminv(1-alfa/2)*sqrt(var(APDdata)/Iter);
+    avg_voip = mean(APDvoip);
+    trust_voip = norminv(1-alfa/2)*sqrt(var(APDvoip)/Iter);
+    avg_queue_data = mean(AQDdata);
+    trust_queue_data = norminv(1-alfa/2)*sqrt(var(AQDdata)/Iter);
+    avg_queue_voip = mean(AQDvoip);
+    trust_queue_voip = norminv(1-alfa/2)*sqrt(var(AQDvoip)/Iter);
+end
+```
+
+### Result
+
+Terminal output:
+```text
+For n=10:
+	VoIP flows, the Av. Packet Delay of data (ms)  = 7.30e+00 +- 2.45e-01
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 6.87e+00 +- 2.40e-01
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 2.45e+01 +- 8.92e-01
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 6.78e+00 +- 2.40e-01
+For n=20:
+	VoIP flows, the Av. Packet Delay of data (ms)  = 2.78e+01 +- 4.34e+00
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 2.74e+01 +- 4.31e+00
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 4.91e+01 +- 7.87e+00
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 2.73e+01 +- 4.31e+00
+For n=30:
+	VoIP flows, the Av. Packet Delay of data (ms)  = 5.00e+02 +- 1.53e+01
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 5.01e+02 +- 1.54e+01
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 5.96e+02 +- 1.80e+01
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 5.01e+02 +- 1.54e+01
+For n=40:
+	VoIP flows, the Av. Packet Delay of data (ms)  = 6.45e+02 +- 6.25e+00
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 6.49e+02 +- 6.40e+00
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 5.64e+02 +- 5.69e+00
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 6.48e+02 +- 6.40e+00
+
+```
+
+![Exercise 1.e value of 1.c](./task2/images/ex_2a_avg_packetDelay.jpg)
+
+![Exercise 1.e value of 1.d](./task2/images/ex_2a_avg_queuingDelay.jpg)
+
 
 <!-- Don't delete, may be necessary to render formulas
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
