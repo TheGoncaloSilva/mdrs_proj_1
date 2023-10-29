@@ -1,4 +1,4 @@
-function [PLdata, PLvoip , APDdata, APDvoip , AQDdata, AQDvoip, MPDdata, MPDvoip , TT] = Simulator3(lambda,C,f,P,n)
+function [PLdata, PLvoip , APDdata, APDvoip, AQDdata, AQDvoip, MPDdata, MPDvoip , TT] = Simulator3(lambda,C,f,P,n)
 % INPUT PARAMETERS:
 %  lambda - packet rate (packets/sec)
 %  C      - link bandwidth (Mbps)
