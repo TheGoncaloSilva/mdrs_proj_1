@@ -52,7 +52,7 @@ end
 The generated Bar plot is present in the image bellow. Take into account that the y-axis is the Average Packet delay (ms) and the x-axis, the Capacity (Mbps). The Confidence Interval with `C > 10` isn't clearly visible in the image due to the fact that the values are very small, so not easily visible.
 
 <div style="text-align:center;">
-  <img src="./task1/images/ex_1a.jpg" alt="Your Image" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
+  <img src="./task1/images/ex_1a.jpg" alt="Exercise 1.a APD according to link capacity" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
 </div>
 
 The recorded values in the terminal were:
@@ -64,11 +64,14 @@ For C=30Mdps, the Av. Packet Delay (ms)  = 2.31e-01 +- 4.41e-04
 For C=40Mdps, the Av. Packet Delay (ms)  = 1.57e-01 +- 2.52e-04
 ```
 
+
 ### Conclusion
 
 The results clearly indicate that increasing/doubling the Link Capacity will lead to lower average packet delays, since the link will support more bytes being sent per second (doubling the available bandwidth).
 It's extremely recommended for the link to have at least 20 Mbps of capacity, since the we can get more than 8 times lower packet delay compared to a 10 Mbps link. However, something should still be said about the law of diminishing returns, because after the 20 Mbps of link capacity the values are lower, but nowhere near the reduction noticed before. If a network operator wanted advice on the cables to buy and each upgraded link capacity costed double the price, clearly anything but essential services (and even then...) should use a 20 Mbps link.
 In summary, the effect of increasing link capacity and it's impact in average packet delay isn't linear. Smaller increases in capacity have more substantial impact when the link is initially congested, but the improvement slow down as higher link capacities are reached.
+
+<div style="page-break-after: always"></div>
 
 ## Exercise 1.b
 
@@ -239,6 +242,8 @@ For C=40:
 
 ```
 
+<div style="page-break-after: always"></div>
+
 ## Exercise 1.c
 
 ### Code
@@ -300,9 +305,13 @@ errorbar(1:length(lambda_values), average_throughput, average_throughput - confi
 
 ### Result
 
-![Exercise 1.c image](./task1/images/ex_1c.jpg)
+<div style="text-align:center;">
+  <img src="./task1/images/ex_1c.jpg" alt="Exercise 1.c image" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
+</div>
 
 ### Conclusion
+
+<div style="page-break-after: always"></div>
 
 ## Exercise 1.d
 
@@ -361,7 +370,11 @@ errorbar(1:length(lambda_values), average_throughput_sim2, average_throughput_si
 
 ### Result
 
-![Exercise 1.d image](./task1/images/ex_1d.jpg)
+<div style="text-align:center;">
+  <img src="./task1/images/ex_1d.jpg" alt="Exercise 1.d image" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
+</div>
+
+<div style="page-break-after: always"></div>
 
 ## Exercise 1.e
 
@@ -387,11 +400,17 @@ end
 
 ### Result
 
-![Exercise 1.e value of 1.c](./task1/images/ex_1e-c.jpg)
+<div style="text-align:center;">
+  <img src="./task1/images/ex_1e-c.jpg" alt="Exercise 1.e value of 1.c" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
+</div>
 
-![Exercise 1.e value of 1.d](./task1/images/ex_1e-d.jpg)
+<div style="text-align:center;">
+  <img src="./task1/images/ex_1e-d.jpg" alt="Exercise 1.e value of 1.d" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
+</div>
 
 ### Conclusion
+
+<div style="page-break-after: always"></div>
 
 ## Exercise 2.a
 
@@ -474,33 +493,38 @@ end
 ```
 ### Result
 
-Executing the matlab script showed the following terminal output and images.
+Executing the matlab script resulted the following terminal output and images.
 ```text
 For n=10:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 2.18e+00 +- 2.60e-02
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 1.76e+00 +- 2.33e-02
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 1.69e+00 +- 2.57e-02
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 1.67e+00 +- 2.33e-02
+	VoIP flows, the APD of data (ms)  = 2.18e+00 +- 2.60e-02
+	VoIP flows, the APD of VoIP (ms)  = 1.76e+00 +- 2.33e-02
+	VoIP flows, the AQD of data (ms)  = 1.69e+00 +- 2.57e-02
+	VoIP flows, the AQD of VoIP (ms)  = 1.67e+00 +- 2.33e-02
 For n=20:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 2.70e+00 +- 4.46e-02
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 2.27e+00 +- 4.15e-02
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 2.20e+00 +- 4.42e-02
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 2.18e+00 +- 4.15e-02
+	VoIP flows, the APD of data (ms)  = 2.70e+00 +- 4.46e-02
+	VoIP flows, the APD of VoIP (ms)  = 2.27e+00 +- 4.15e-02
+	VoIP flows, the AQD of data (ms)  = 2.20e+00 +- 4.42e-02
+	VoIP flows, the AQD of VoIP (ms)  = 2.18e+00 +- 4.15e-02
 For n=30:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 3.58e+00 +- 7.10e-02
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 3.14e+00 +- 6.82e-02
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 3.08e+00 +- 7.07e-02
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 3.05e+00 +- 6.82e-02
+	VoIP flows, the APD of data (ms)  = 3.58e+00 +- 7.10e-02
+	VoIP flows, the APD of VoIP (ms)  = 3.14e+00 +- 6.82e-02
+	VoIP flows, the AQD of data (ms)  = 3.08e+00 +- 7.07e-02
+	VoIP flows, the AQD of VoIP (ms)  = 3.05e+00 +- 6.82e-02
 For n=40:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 6.02e+00 +- 2.64e-01
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 5.58e+00 +- 2.59e-01
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 5.52e+00 +- 2.64e-01
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 5.49e+00 +- 2.59e-01
+	VoIP flows, the APD of data (ms)  = 6.02e+00 +- 2.64e-01
+	VoIP flows, the APD of VoIP (ms)  = 5.58e+00 +- 2.59e-01
+	VoIP flows, the AQD of data (ms)  = 5.52e+00 +- 2.64e-01
+	VoIP flows, the AQD of VoIP (ms)  = 5.49e+00 +- 2.59e-01
 ```
 
-![Exercise 2.a Average Packet Delay](./task2/images/ex_2a_avg_packetDelay.jpg)
 
-![Exercise 2.a Average Queuing Delay](./task2/images/ex_2a_avg_queuingDelay.jpg)
+<div style="text-align:center;">
+  <img src="./task2/images/ex_2a_avg_packetDelay.jpg" alt="Exercise 2.a Average Packet Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
+</div>
+
+<div style="text-align:center;">
+  <img src="./task2/images/ex_2a_avg_queuingDelay.jpg" alt="Exercise 2.a Average Queuing Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
+</div>
 
 As we can see by the terminal output and the images, Both **Average Packet Delay** and **Average Queuing Delay** show an increase in time, as the number of VoIP flows increases. This is due to the higher traffic generated by the increasing VoIP flows, competing for more resources of a limited bandwidth/link capacity. Since Simulator 3 doesn't implement priorities with the Data and VoIP packets, both types of packets have the same treatment in the FIFO queue. Which means that as observed in the images, the delays are similar for both of them.
 This results indicate the need to establish priorities in the FIFO queue, since generally the VoIP should have lower delays than other packet types, given the higher time-sensitivity of the data. This same situation will be approached in the following exercise.
