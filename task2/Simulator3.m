@@ -106,13 +106,16 @@ while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping
         end
         
         if QUEUEOCCUPATION > 0
-            if QUEUE(1,3) == VOIP
-                TotalQueuingDelayVoip = TotalQueuingDelayVoip + (Clock - QUEUE(1,2));
-            else
-                TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
-            end
             Event_List = [Event_List; DEPARTURE, Clock + 8*QUEUE(1,1)/(C*10^6), QUEUE(1,1), QUEUE(1,2), QUEUE(1,3)];
             QUEUEOCCUPATION= QUEUEOCCUPATION - QUEUE(1,1);
+            if (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P
+                if QUEUE(1,3) == VOIP 
+                    TotalQueuingDelayVoip = TotalQueuingDelayVoip + (Clock - QUEUE(1,2));
+                else
+                    TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
+                end
+            end
+            
             QUEUE(1,:)= [];
         else
             STATE= 0;
@@ -125,7 +128,7 @@ PLdata= 100*LOSTPACKETSdata/TOTALPACKETSdata;      % in %
 PLvoip= 100*LOSTPACKETSvoip/TOTALPACKETSvoip;      % in %
 APDdata= 1000*DELAYSdata/TRANSMITTEDPACKETSdata;   % in milliseconds
 APDvoip= 1000*DELAYSvoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
-AQDdata= 1000*TotalQueuingDelayData/TRANSMITTEDPACKETSvoip;   % in milliseconds
+AQDdata= 1000*TotalQueuingDelayData/TRANSMITTEDPACKETSdata;   % in milliseconds
 AQDvoip= 1000*TotalQueuingDelayVoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
 MPDdata= 1000*MAXDELAYdata;                    % in milliseconds
 MPDvoip= 1000*MAXDELAYvoip;                    % in milliseconds

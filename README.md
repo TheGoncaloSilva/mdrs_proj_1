@@ -396,7 +396,12 @@ end
 ## Exercise 2.a
 
 ### Modifications or insertions in the code
-The following modifications were made in the Simulator:
+In order to obtain the Average Packet Queuing Delay, some changes needed to be made to Simulator3, mainly the introduction of four new variables:
+* `TotalQueuingDelayData` - Holds the Queuing times of all **data** packets
+* `TotalQueuingDelayVoip` - Holds the Queuing times of all **voip** packets
+* `AQDdata` - Calculates the Average Queuing Delay of **data** packets, by the ratio of Queuing times with the total transmitted **data** packets.
+* `AQDvoip` - Calculates the Average Queuing Delay of **voip** packets, by the ratio of Queuing times with the total transmitted **voip** packets.
+This changes involved incrementing the variables of Queuing times, when the packet are **Departing**, and a check to not count the last packet, as it may not be received, so shouldn't be counted (with higher thresholds won't make a difference, but in lower it'll affect the results). This changes can be observed in the following code:
 ```matlab
 function [PLdata, PLvoip , APDdata, APDvoip , AQDdata, AQDvoip, MPDdata, MPDvoip , TT] = Simulator3(lambda,C,f,P,n)
 (...)
@@ -416,13 +421,16 @@ while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping
         (...)
         
         if QUEUEOCCUPATION > 0
-            if QUEUE(1,3) == VOIP
-                TotalQueuingDelayVoip = TotalQueuingDelayVoip + (Clock - QUEUE(1,2));
-            else
-                TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
-            end
             Event_List = [Event_List; DEPARTURE, Clock + 8*QUEUE(1,1)/(C*10^6), QUEUE(1,1), QUEUE(1,2), QUEUE(1,3)];
             QUEUEOCCUPATION= QUEUEOCCUPATION - QUEUE(1,1);
+            if (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P
+                if QUEUE(1,3) == VOIP 
+                    TotalQueuingDelayVoip = TotalQueuingDelayVoip + (Clock - QUEUE(1,2));
+                else
+                    TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
+                end
+            end
+            
             QUEUE(1,:)= [];
         else
             STATE= 0;
@@ -432,31 +440,26 @@ end
 
 (...)
 APDvoip= 1000*DELAYSvoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
-AQDdata= 1000*TotalQueuingDelayData/TRANSMITTEDPACKETSvoip;   % in milliseconds
+AQDdata= 1000*TotalQueuingDelayData/TRANSMITTEDPACKETSdata;   % in milliseconds
 AQDvoip= 1000*TotalQueuingDelayVoip/TRANSMITTEDPACKETSvoip;   % in milliseconds
 MPDdata= 1000*MAXDELAYdata;                    % in milliseconds
 (...)
 ```
 In the script to launch the Simulator, we just want to point out the function that accepts the modifiable n VoIP flow numbers and calculates all the necessary attributes:
 ```matlab
-function [avg_data,trust_data, avg_voip, trust_voip, avg_queue_data, trust_queue_data, avg_queue_voip, trust_queue_voip]=average_packet_delay(n)
+function [(avg_data,trust_data, avg_voip, trust_voip, avg_queue_data, trust_queue_data, avg_queue_voip, trust_queue_voip)]=average_packet_delay(n)
     Iter = 20;         %number of simulations
-    Lambda = 1800;  %pps
+    Lambda = 1500;  %pps
     F = 1000000;    %Bytes
     P = 100000;
     C = 10;
-    PLdata = zeros(1,Iter); %vector with N simulation values
-    PLvoip = zeros(1,Iter); %vector with N simulation values
     APDdata = zeros(1,Iter); %vector with N simulation values
     APDvoip = zeros(1,Iter); %vector with N simulation values
     AQDdata = zeros(1,Iter); %vector with N simulation values
     AQDvoip = zeros(1,Iter); %vector with N simulation values
-    MPDdata = zeros(1,Iter); %vector with N simulation values
-    MPDvoip = zeros(1,Iter); %vector with N simulation values
-    TT = zeros(1,Iter); %vector with N simulation values
-    
+      
     for it= 1:Iter
-        [PLdata(it),PLvoip(it),APDdata(it),APDvoip(it),AQDdata(it),AQDvoip(it),MPDdata(it),MPDvoip(it),TT(it)] = Simulator3(Lambda, C, F, P, n);
+        [~,~,APDdata(it),APDvoip(it),AQDdata(it),AQDvoip(it),~,~,~] = Simulator3(Lambda, C, F, P, n);
     end
     alfa= 0.1; % 90% confidence interval %
     avg_data = mean(APDdata);
@@ -469,38 +472,38 @@ function [avg_data,trust_data, avg_voip, trust_voip, avg_queue_data, trust_queue
     trust_queue_voip = norminv(1-alfa/2)*sqrt(var(AQDvoip)/Iter);
 end
 ```
-
 ### Result
 
-Terminal output:
+Executing the matlab script showed the following terminal output and images.
 ```text
 For n=10:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 7.30e+00 +- 2.45e-01
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 6.87e+00 +- 2.40e-01
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 2.45e+01 +- 8.92e-01
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 6.78e+00 +- 2.40e-01
+	VoIP flows, the Av. Packet Delay of data (ms)  = 2.18e+00 +- 2.60e-02
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 1.76e+00 +- 2.33e-02
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 1.69e+00 +- 2.57e-02
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 1.67e+00 +- 2.33e-02
 For n=20:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 2.78e+01 +- 4.34e+00
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 2.74e+01 +- 4.31e+00
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 4.91e+01 +- 7.87e+00
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 2.73e+01 +- 4.31e+00
+	VoIP flows, the Av. Packet Delay of data (ms)  = 2.70e+00 +- 4.46e-02
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 2.27e+00 +- 4.15e-02
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 2.20e+00 +- 4.42e-02
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 2.18e+00 +- 4.15e-02
 For n=30:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 5.00e+02 +- 1.53e+01
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 5.01e+02 +- 1.54e+01
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 5.96e+02 +- 1.80e+01
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 5.01e+02 +- 1.54e+01
+	VoIP flows, the Av. Packet Delay of data (ms)  = 3.58e+00 +- 7.10e-02
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 3.14e+00 +- 6.82e-02
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 3.08e+00 +- 7.07e-02
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 3.05e+00 +- 6.82e-02
 For n=40:
-	VoIP flows, the Av. Packet Delay of data (ms)  = 6.45e+02 +- 6.25e+00
-	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 6.49e+02 +- 6.40e+00
-	VoIP flows, the Av. Queuing Delay of data (ms)  = 5.64e+02 +- 5.69e+00
-	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 6.48e+02 +- 6.40e+00
-
+	VoIP flows, the Av. Packet Delay of data (ms)  = 6.02e+00 +- 2.64e-01
+	VoIP flows, the Av. Packet Delay of VoIP (ms)  = 5.58e+00 +- 2.59e-01
+	VoIP flows, the Av. Queuing Delay of data (ms)  = 5.52e+00 +- 2.64e-01
+	VoIP flows, the Av. Queuing Delay of VoIP (ms)  = 5.49e+00 +- 2.59e-01
 ```
 
-![Exercise 1.e value of 1.c](./task2/images/ex_2a_avg_packetDelay.jpg)
+![Exercise 2.a Average Packet Delay](./task2/images/ex_2a_avg_packetDelay.jpg)
 
-![Exercise 1.e value of 1.d](./task2/images/ex_2a_avg_queuingDelay.jpg)
+![Exercise 2.a Average Queuing Delay](./task2/images/ex_2a_avg_queuingDelay.jpg)
 
+As we can see by the terminal output and the images, Both **Average Packet Delay** and **Average Queuing Delay** show an increase in time, as the number of VoIP flows increases. This is due to the higher traffic generated by the increasing VoIP flows, competing for more resources of a limited bandwidth/link capacity. Since Simulator 3 doesn't implement priorities with the Data and VoIP packets, both types of packets have the same treatment in the FIFO queue. Which means that as observed in the images, the delays are similar for both of them.
+This results indicate the need to establish priorities in the FIFO queue, since generally the VoIP should have lower delays than other packet types, given the higher time-sensitivity of the data. This same situation will be approached in the following exercise.
 
 <!-- Don't delete, may be necessary to render formulas
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
