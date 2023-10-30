@@ -314,6 +314,10 @@ errorbar(1:length(lambda_values), average_throughput, average_throughput - confi
 
 ```
 
+
+
+### Result
+
 The script originated the following terminal output:
 
 ```text
@@ -326,8 +330,6 @@ Average Throughput for lambda = 1600: 7.93 +- 0.01
 Average Packet Delay for lambda = 1900: 8.06 +- 0.29
 Average Throughput for lambda = 1900: 9.43 +- 0.02
 ```
-
-### Result
 
 <div style="text-align:center;">
   <img src="./task1/images/ex_1c.jpg" alt="Exercise 1.c image" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
@@ -365,33 +367,48 @@ The packet arrival rate (λ) has a substantial impact on the performance of the 
 In Exercise 1.d, we revisit the network performance assessment carried out in Exercise 1.c. However, this time, we utilize "Simulator2" with a bit error rate (BER) parameter, b = 10^-5. We aim to evaluate the influence of BER on network behavior. Similar to Exercise 1.c, we execute 20 simulations for each of the specified packet arrival rates (λ). Key performance metrics, including average packet delay and throughput, are computed, and their associated 90% confidence intervals are derived. The subsequent MATLAB code illustrates our approach to conducting these simulations, processing the data, and presenting the results in bar charts with error bars. This approach enables a comprehensive comparison of network performance between Exercise 1.c and 1.d and draws conclusions regarding the impact of BER on the obtained results.
 
 ```matlab
-
 C = 10;              % Link bandwidth (Mbps)
 f = 1e6;             % Queue size (Bytes)
 P = 1e5;             % Stopping criterion (number of packets)
 b = 1e-5;            % Bit error rate
 lambda_values = [1000, 1300, 1600, 1900];  % Packet arrival rate (pps)
 
+N = 20; % Number of simulations
+
 % Vectors to store the results for Simulator2
 average_packet_delay_sim2 = zeros(length(lambda_values), 1);
 average_throughput_sim2 = zeros(length(lambda_values), 1);
+confidence_intervals_delay_sim2 = zeros(length(lambda_values), 2);
+confidence_intervals_throughput_sim2 = zeros(length(lambda_values), 2);
 
-% Run the simulations for each lambda value and the specified BER
 for i = 1:length(lambda_values)
     lambda = lambda_values(i);
-    num_simulations = 20;
-    delays_sim2 = zeros(num_simulations, 1);
-    throughputs_sim2 = zeros(num_simulations, 1);
-  
-    for j = 1:num_simulations
+    
+    % Create vectors to store results of simulations for Simulator2
+    delays_sim2 = zeros(N, 1);
+    throughputs_sim2 = zeros(N, 1);
+    
+    for j = 1:N
         [PL, APD, ~, TT] = Simulator2(lambda, C, f, P, b);
         delays_sim2(j) = APD;
         throughputs_sim2(j) = TT;
     end
-  
-    % Calculate the mean for Simulator2
-    average_packet_delay_sim2(i) = mean(delays_sim2);
-    average_throughput_sim2(i) = mean(throughputs_sim2);
+    
+    % Calculate the mean and confidence interval for delay for Simulator2
+    media = mean(delays_sim2);
+    term = norminv(0.95) * sqrt(var(delays_sim2) / N);
+    fprintf('Average Packet Delay for Simulator2 with lambda = %d: %.2f +- %.2f\n', lambda, media, term);
+    
+    average_packet_delay_sim2(i) = media;
+    confidence_intervals_delay_sim2(i, :) = [media - term, media + term];
+    
+    % Calculate the mean and confidence interval for throughput for Simulator2
+    media = mean(throughputs_sim2);
+    term = norminv(0.95) * sqrt(var(throughputs_sim2) / N);
+    fprintf('Average Throughput for Simulator2 with lambda = %d: %.2f +- %.2f\n', lambda, media, term);
+    
+    average_throughput_sim2(i) = media;
+    confidence_intervals_throughput_sim2(i, :) = [media - term, media + term];
 end
 
 % Display the results in bar charts for Simulator2
@@ -402,7 +419,7 @@ title('Average Packet Delay (Simulator2)');
 xlabel('Packet Arrival Rate (pps)');
 ylabel('Average Delay (ms)');
 hold on;
-errorbar(1:length(lambda_values), average_packet_delay_sim2, average_packet_delay_sim2 - confidence_intervals_delay(:, 1), confidence_intervals_delay(:, 2) - average_packet_delay_sim2, 'r.', 'LineWidth', 1);
+errorbar(1:length(lambda_values), average_packet_delay_sim2, average_packet_delay_sim2 - confidence_intervals_delay_sim2(:, 1), confidence_intervals_delay_sim2(:, 2) - average_packet_delay_sim2, 'r.', 'LineWidth', 1);
 
 subplot(2, 1, 2);
 bar(average_throughput_sim2);
@@ -410,16 +427,62 @@ title('Average Throughput (Simulator2)');
 xlabel('Packet Arrival Rate (pps)');
 ylabel('Average Throughput (Mbps)');
 hold on;
-errorbar(1:length(lambda_values), average_throughput_sim2, average_throughput_sim2 - confidence_intervals_throughput(:, 1), confidence_intervals_throughput(:, 2) - average_throughput_sim2, 'r.', 'LineWidth', 1);
+errorbar(1:length(lambda_values), average_throughput_sim2, average_throughput_sim2 - confidence_intervals_throughput_sim2(:, 1), confidence_intervals_throughput_sim2(:, 2) - average_throughput_sim2, 'r.', 'LineWidth', 1);
 ```
 
 ### Result
+
+The script originated the following terminal output:
+
+```text
+Average Packet Delay for Simulator2 with lambda = 1000: 0.94 +- 0.00
+Average Throughput for Simulator2 with lambda = 1000: 4.53 +- 0.01
+Average Packet Delay for Simulator2 with lambda = 1300: 1.33 +- 0.01
+Average Throughput for Simulator2 with lambda = 1300: 5.89 +- 0.01
+Average Packet Delay for Simulator2 with lambda = 1600: 2.29 +- 0.03
+Average Throughput for Simulator2 with lambda = 1600: 7.24 +- 0.01
+Average Packet Delay for Simulator2 with lambda = 1900: 8.08 +- 0.24
+Average Throughput for Simulator2 with lambda = 1900: 8.58 +- 0.01
+```
 
 <div style="text-align:center;">
   <img src="./task1/images/ex_1d.jpg" alt="Exercise 1.d image" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
 </div>
 
 <div style="page-break-after: always"></div>
+
+### Conclusion
+In experiment 1.d, the focus was on investigating the impact of Bit Error Rate (BER) on the performance of the communication system, and it was performed using Simulator2 with a specified BER (b = 10^-5). Here's a comparison with the results from experiment 1.c:
+
+#### Average Packet Delay
+- For λ = 1000 pps in Simulator2, the average packet delay was 0.94 with a small margin of error. In comparison, the average packet delay for the same λ in Simulator1 was 0.96 with a similar margin of error. The delay values are quite close, suggesting that a relatively low BER does not significantly affect packet delay.
+
+- As the packet arrival rate increased to λ = 1300 pps, both Simulator2 and Simulator1 showed an increase in average packet delay (1.33 and 1.34, respectively). Again, the difference is minimal, indicating that BER did not have a substantial impact on the delay for these moderate arrival rates.
+
+- However, for λ = 1600 pps, Simulator2 exhibited a slightly higher average packet delay (2.29) compared to Simulator1 (2.27). The margin of error was also slightly larger for Simulator2. This suggests that as the packet arrival rate increases, a higher BER may result in slightly more delay.
+At the highest tested rate, λ = 1900 pps, Simulator2 showed a similar average packet delay (8.08) compared to Simulator1 (8.06). Both had wide margins of error, indicating significant delays at this high arrival rate.
+
+#### Average Throughput
+
+- For λ = 1000 pps in Simulator2, the average throughput was 4.53 Mbps, while in Simulator1, it was 4.96 Mbps. The lower throughput in Simulator2 is expected, as a higher BER (10^-5) results in more packet loss and retransmissions.
+As λ increased to 1300 pps, Simulator2 maintained a lower throughput (5.89 Mbps) compared to Simulator1 (6.44 Mbps), reflecting the impact of BER on throughput.
+
+- At λ = 1600 pps, Simulator2 still had lower throughput (7.24 Mbps) compared to Simulator1 (7.93 Mbps).
+
+- At λ = 1900 pps, Simulator2's throughput (8.58 Mbps) surpassed that of Simulator1 (9.43 Mbps), suggesting that at very high arrival rates, the lower BER in Simulator2 mitigated some of the effects of congestion.
+
+
+**The Bit Error Rate (BER) plays a significant role in determining the performance of a communication system, especially in scenarios with higher packet loss.**
+
+At moderate arrival rates (λ = 1000 to 1600 pps), the differences in average packet delay between Simulator1 and Simulator2 were minimal. This suggests that **a moderate BER does not strongly impact delay at these rates.**
+
+However, as the packet arrival rate increases, the impact of BER becomes more pronounced. In Simulator2, with **a lower BER, the average packet delay tends to be slightly higher at high arrival rates.**
+
+**The impact of BER on throughput is more evident.** Simulator2 consistently showed lower throughput than Simulator1, especially at moderate and high arrival rates. This is due to the increased packet loss and retransmissions caused by **a higher BER.**
+
+For very high arrival rates, **the lower BER in Simulator2 led to slightly better throughput compared to Simulator1, indicating that a lower BER can mitigate congestion effects to some extent.**
+In summary, these results emphasize the importance of considering BER when designing and evaluating communication systems, particularly in scenarios with high packet loss and congestion. **Lower BER can lead to improved performance in such situations, but it may have limited benefits at moderate arrival rates.**
+
 
 ## Exercise 1.e
 
