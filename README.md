@@ -508,6 +508,27 @@ end
 
 ### Result
 
+The script originated the following terminal output:
+
+```text
+Average Packet Delay for Simulator1 with lambda = 1000: 0.55 +- 0.03
+Average Throughput for Simulator1 with lambda = 1000: 3.61 +- 0.17
+Average Packet Delay for Simulator2 with lambda = 1000: 0.47 +- 0.02
+Average Throughput for Simulator2 with lambda = 1000: 3.06 +- 0.12
+Average Packet Delay for Simulator1 with lambda = 1300: 0.56 +- 0.04
+Average Throughput for Simulator1 with lambda = 1300: 4.32 +- 0.22
+Average Packet Delay for Simulator2 with lambda = 1300: 0.49 +- 0.03
+Average Throughput for Simulator2 with lambda = 1300: 3.72 +- 0.18
+Average Packet Delay for Simulator1 with lambda = 1600: 0.56 +- 0.04
+Average Throughput for Simulator1 with lambda = 1600: 4.81 +- 0.25
+Average Packet Delay for Simulator2 with lambda = 1600: 0.50 +- 0.04
+Average Throughput for Simulator2 with lambda = 1600: 4.25 +- 0.23
+Average Packet Delay for Simulator1 with lambda = 1900: 0.53 +- 0.03
+Average Throughput for Simulator1 with lambda = 1900: 5.11 +- 0.21
+Average Packet Delay for Simulator2 with lambda = 1900: 0.48 +- 0.03
+Average Throughput for Simulator2 with lambda = 1900: 4.51 +- 0.20
+```
+
 <div style="text-align:center;">
   <img src="./task1/images/ex_1e-c.jpg" alt="Exercise 1.e value of 1.c" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
 </div>
@@ -518,7 +539,48 @@ end
 
 ### Conclusion
 
+In experiment 1.e, both simulators were modified to consider a range of packet sizes, with specific probabilities for different sizes. The probabilities were set as follows: 25% for 64 bytes, 17% for 110 bytes, 11% for 1518 bytes, and equal probabilities for all other values within the range (65 to 109 and 111 to 1517 bytes).
+
+#### Average Packet Delay
+##### Simulator1
+
+- For λ = 1000 pps, the average packet delay in Simulator1 decreased to 0.55 (from 0.96 in experiment 1.c). The margin of error increased slightly to 0.03. This suggests that the new packet size statistics may have contributed to improved delay performance at this arrival rate.
+
+- At λ = 1300 pps, the average packet delay in Simulator1 remained fairly consistent (0.56) with a slightly wider margin of error (0.04) compared to experiment 1.c.
+
+- For λ = 1600 pps, Simulator1 exhibited similar results to the previous experiment (0.56 delay), but with a wider margin of error (0.04).
+
+- At λ = 1900 pps, the average packet delay in Simulator1 decreased to 0.53 (from 8.06 in experiment 1.c), with a smaller margin of error (0.03). This significant improvement suggests that the new packet size statistics positively affected the system's performance at high arrival rates.
+
+
+##### Simulator2
+
+- In Simulator2, the average packet delay exhibited similar trends. For all tested arrival rates, the delay values in Simulator2 were slightly lower compared to those in Simulator1. This suggests that the new packet size statistics had a beneficial impact on reducing packet delay in Simulator2.
 <div style="page-break-after: always"></div>
+
+#### Average Throughput
+##### Simulator1
+
+- For λ = 1000 pps, the average throughput in Simulator1 decreased to 3.61 Mbps (from 4.96 Mbps in experiment 1.c). The margin of error widened to 0.17. This indicates a decrease in throughput, possibly due to the new packet size distribution, which may lead to increased contention and congestion.
+
+- At λ = 1300 pps, the average throughput also decreased to 4.32 Mbps with a wider margin of error (0.22), compared to experiment 1.c.
+
+- Similarly, for λ = 1600 pps, Simulator1's throughput was lower (4.81 Mbps) with a wider margin of error (0.25).
+
+- At λ = 1900 pps, the average throughput in Simulator1 decreased to 5.11 Mbps (from 9.43 Mbps in experiment 1.c), with a larger margin of error (0.21).
+
+##### Simulator2
+- In Simulator2, the average throughput exhibited the same trends, with consistently lower values compared to Simulator1. This suggests that the new packet size statistics contributed to reduced throughput in Simulator2 as well.
+
+
+The introduction of a new packet size distribution, with a higher probability of smaller packet sizes, led to **reduced average packet delay** in both Simulator1 and Simulator2, particularly at high arrival rates (λ = 1900 pps). This improvement indicates that an adjusted packet size distribution can alleviate congestion-related delays.
+
+However, the new packet size distribution had a **negative impact on throughput** in both simulators for all tested arrival rates. The reduced throughput is likely due to increased contention and higher collision rates resulting from smaller packet sizes. Smaller packets consume a larger portion of the channel's capacity, leading to decreased overall throughput.
+
+In summary, the results highlight the trade-off between average packet delay and throughput in a network with varying packet sizes. Careful consideration of packet size distribution is essential when designing communication systems to achieve the desired balance between delay and throughput.
+
+
+
 
 ## Exercise 2.a
 
