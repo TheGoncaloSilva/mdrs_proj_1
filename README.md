@@ -251,11 +251,12 @@ For C=40:
 In Exercise 1.c, we utilized the "Simulator1" to evaluate network performance under specific link bandwidth and queue size configurations. We conducted 20 simulations for varying packet arrival rates (λ) and computed average packet delay and throughput, accompanied by 90% confidence intervals. The provided MATLAB code offers insights into our approach, covering simulation execution, data analysis, and results visualization using bar charts with error bars. This method allowed for a comprehensive exploration of how different packet arrival rates influence network performance.
 
 ```matlab
-
 C = 10;              % Link bandwidth (Mbps)
 f = 1e6;             % Queue size (Bytes)
 P = 1e5;             % Stopping criterion (number of packets)
 lambda_values = [1000, 1300, 1600, 1900];  % Packet arrival rate (pps)
+
+N = 20; % Number of simulations
 
 % Vectors to store the results
 average_packet_delay = zeros(length(lambda_values), 1);
@@ -263,25 +264,34 @@ average_throughput = zeros(length(lambda_values), 1);
 confidence_intervals_delay = zeros(length(lambda_values), 2);
 confidence_intervals_throughput = zeros(length(lambda_values), 2);
 
-% Run the simulator 20 times for each lambda value
 for i = 1:length(lambda_values)
     lambda = lambda_values(i);
-    num_simulations = 20;
-    delays = zeros(num_simulations, 1);
-    throughputs = zeros(num_simulations, 1);
-  
-    for j = 1:num_simulations
+    
+    % Create vectors to store results of simulations
+    delays = zeros(N, 1);
+    throughputs = zeros(N, 1);
+    
+    for j = 1:N
         [PL, APD, ~, TT] = Simulator1(lambda, C, f, P);
         delays(j) = APD;
         throughputs(j) = TT;
     end
-  
-    % Calculate the mean and 90% confidence interval
-    average_packet_delay(i) = mean(delays);
-    confidence_intervals_delay(i, :) = prctile(delays, [5, 95]);
-  
-    average_throughput(i) = mean(throughputs);
-    confidence_intervals_throughput(i, :) = prctile(throughputs, [5, 95]);
+    
+    % Calculate the mean and confidence interval for delay
+    media = mean(delays);
+    term = norminv(0.95) * sqrt(var(delays) / N);
+    fprintf('Average Packet Delay for lambda = %d: %.2f +- %.2f\n', lambda, media, term);
+    
+    average_packet_delay(i) = media;
+    confidence_intervals_delay(i, :) = [media - term, media + term];
+    
+    % Calculate the mean and confidence interval for throughput
+    media = mean(throughputs);
+    term = norminv(0.95) * sqrt(var(throughputs) / N);
+    fprintf('Average Throughput for lambda = %d: %.2f +- %.2f\n', lambda, media, term);
+    
+    average_throughput(i) = media;
+    confidence_intervals_throughput(i, :) = [media - term, media + term];
 end
 
 % Bar Charts
@@ -301,6 +311,20 @@ xlabel('Packet Arrival Rate (pps)');
 ylabel('Average Throughput (Mbps)');
 hold on;
 errorbar(1:length(lambda_values), average_throughput, average_throughput - confidence_intervals_throughput(:, 1), confidence_intervals_throughput(:, 2) - average_throughput, 'r.', 'LineWidth', 1);
+
+```
+
+The script originated the following terminal output:
+
+```text
+Average Packet Delay for lambda = 1000: 0.96 +- 0.00
+Average Throughput for lambda = 1000: 4.96 +- 0.01
+Average Packet Delay for lambda = 1300: 1.34 +- 0.01
+Average Throughput for lambda = 1300: 6.44 +- 0.01
+Average Packet Delay for lambda = 1600: 2.27 +- 0.02
+Average Throughput for lambda = 1600: 7.93 +- 0.01
+Average Packet Delay for lambda = 1900: 8.06 +- 0.29
+Average Throughput for lambda = 1900: 9.43 +- 0.02
 ```
 
 ### Result
@@ -310,6 +334,27 @@ errorbar(1:length(lambda_values), average_throughput, average_throughput - confi
 </div>
 
 ### Conclusion
+
+The experiment evaluated the performance of a communication system with specific settings (C = 10 Mbps and f = 1,000,000 Bytes) while varying the packet arrival rate (λ) from 1000 to 1900 pps (packets per second). Key findings include average packet delay and average throughput.
+
+#### Average Packet Delay
+- For λ = 1000 pps, the average packet delay was 0.96 with a small margin of error, indicating minimal delay.
+- As the packet arrival rate increased, the average delay also increased, reaching 2.27 for λ = 1600 pps.
+- However, at λ = 1900 pps, the delay significantly jumped to 8.06 with a wide margin of error, suggesting substantial delays at high arrival rates.
+
+#### Average Throughput
+- For λ = 1000 pps, the average throughput was 4.96 Mbps, with a small margin of error, indicating efficient bandwidth utilization.
+- As the packet arrival rate increased, the average throughput initially rose to 7.93 Mbps for λ = 1600 pps.
+- However, at λ = 1900 pps, the throughput dropped to 9.43 Mbps, suggesting system saturation.
+
+
+
+
+
+The packet arrival rate (λ) has a substantial impact on the performance of the communication system. As λ increases, it results in higher average packet delay, although there is an initial boost in throughput. At moderate arrival rates (λ = 1000 to 1600 pps), the system operates efficiently, demonstrating low delay and high throughput. However, at very high arrival rates (λ = 1900 pps), the system encounters significant delays and reaches its throughput limit, indicating saturation. Consequently, optimizing the packet arrival rate becomes crucial to strike a delicate balance between bandwidth efficiency and service quality in communication systems.
+
+
+
 
 <div style="page-break-after: always"></div>
 
