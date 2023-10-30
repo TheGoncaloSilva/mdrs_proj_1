@@ -24,7 +24,7 @@ hold on
 xlabel = 'Capacity (Mbps)';
 ylabel = 'Avg Packet Delay (ms)';
 er = errorbar(C,APD(:,1),APD(:,2),APD(:,2), 'r.');  
-er.Color = [0 0 0];                
+er.Color = [0 0 0];              
 er.LineStyle = 'none';
 hold off
 
@@ -592,7 +592,7 @@ while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping
         (...)
     else                        % If first event is a DEPARTURE
         (...)
-      
+    
         if QUEUEOCCUPATION > 0
             Event_List = [Event_List; DEPARTURE, Clock + 8*QUEUE(1,1)/(C*10^6), QUEUE(1,1), QUEUE(1,2), QUEUE(1,3)];
             QUEUEOCCUPATION= QUEUEOCCUPATION - QUEUE(1,1);
@@ -603,7 +603,7 @@ while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping
                     TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
                 end
             end
-          
+        
             QUEUE(1,:)= [];
         else
             STATE= 0;
@@ -632,7 +632,7 @@ function [(avg_data,trust_data, avg_voip, trust_voip, avg_queue_data, trust_queu
     APDvoip = zeros(1,Iter); %vector with N simulation values
     AQDdata = zeros(1,Iter); %vector with N simulation values
     AQDvoip = zeros(1,Iter); %vector with N simulation values
-    
+  
     for it= 1:Iter
         [~,~,APDdata(it),APDvoip(it),AQDdata(it),AQDvoip(it),~,~,~] = Simulator3(Lambda, C, F, P, n);
     end
@@ -813,7 +813,7 @@ For N=40:
 
 ### Conclusion:
 
-### Matlab Script code and output
+### Matlab Script code
 
 ```matlab
 N = [10,20,30,40]; % Mbps
