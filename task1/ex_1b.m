@@ -1,4 +1,5 @@
 C = [10,20,30,40]; % Mbps
+K = 1800;
 
 for i=1:length(C)
     capacity = C(i)*10^6;
