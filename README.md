@@ -738,7 +738,6 @@ For n=40:
 	VoIP flows, the AQD of VoIP (ms)  = 4.39e-01 +- 1.26e-03
 ```
 
-
 <div style="text-align:center;">
   <img src="./task2/images/ex_2b_avg_packetDelay.jpg" alt="Exercise 2.a Average Packet Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
 </div>
@@ -750,3 +749,174 @@ For n=40:
 As we can see by the terminal output and the images, the Simulator 4 with the introduction of priority for **VoIP** over **data** packets clearly improves the **Average Packet Delay** (APD) and **Average Queuing Delay** (AQD) of VoIP packets. This results in improvements ranging from 80 to 93% for the Queuing of **VoIP** packets, compared to a solution without priority. Also interesting is the stability of the system, independently of the number of VoIP flows, to maintain constant APD and AQD delays for **VoIP**.
 However, the most interesting fact was that using priority for VoIP packets didn't result in a noticeable increase of APD and AQD for **data** packets, compared to a solution without priorities, showing that the overall impact in the system is minimal.
 Concluding, using priorities for certain packet types (VoIP, real-time trading, emergency services), has a significant impact on reducing the delays for those systems, even under increased network load, but doesn't impact the other services as to cancel all the previous gains. This fact shows why this types of approaches are so widely used around the world in guaranteeing Quality of Service (QoS).
+
+<div style="page-break-after: always"></div>
+
+## Exercise 2.c
+
+Before calculating the Average Packet delay for all voip flows, we need to introduces some formulas and values:
+
+* The Mean Service time is calculated by the heavy average of packet size divided by the link capacity ($C$) and the number of the VoIP flows ($N$), with $S=packet\_size$ **in bytes** and $P=packet\_probability$ expressed $[0,1]$:
+  $$
+  E[S]=\sum_{i=1}^\infty\frac{ S_i }{C}\times P_i \times (1 - \frac{1}{N})
+  $$
+* Second moment of the Service time (or Variance of the service time):
+  $$
+  E[S²]=\sum_{i=1}^\infty\frac{S_i²}{C}\times P_i \times (1 - \frac{1}{N})
+  $$
+* knowing: $p_k=\lambda E[S]$
+* To calculate the average waiting time (WQ) **in an M/G/1 queue** with priorities, we use the *Pollaczek-Khinchine* taking into account that $W_{voip}$ has higher priority than $W_{data}$:
+  $$
+  W_{Qvoip} = \frac{\lambda E[S]}{2\times(1 - p_{voip})}
+  $$
+  $$
+  W_{Qdata} = \frac{\lambda E[S]}{2\times(1 - p_{voip})\times(1-p_{voip}-p_{data})}
+  $$
+* With the *Pollaczek-Khinchine* formula we can calculate the average packet delay as:
+  $$
+  W = W_q + E[S]
+  $$
+* $\lambda = 1500$pps (Packets Per Second)
+
+With this formulas in mind and with the help of Matlab, we'll proceed in calculating the Average Packet delay for each VoIP flows:
+
+* For $N=10$:
+...
+
+### Results
+
+With the help of a Matlab script that's present after the Conclusion, we managed to the following terminal output and images:
+
+```text
+For N=10:
+	Wq voip = 0.0076 ms
+	W voip = 0.0983 ms
+	Wq data = 1.8638 ms
+	W data = 2.3102 ms
+For N=20:
+	Wq voip = 0.0081 ms
+	W voip = 0.1038 ms
+	Wq data = 2.5788 ms
+	W data = 3.0500 ms
+For N=30:
+	Wq voip = 0.0082 ms
+	W voip = 0.1057 ms
+	Wq data = 2.9235 ms
+	W data = 3.4030 ms
+For N=40:
+	Wq voip = 0.0083 ms
+	W voip = 0.1066 ms
+	Wq data = 3.1263 ms
+	W data = 3.6099 ms
+```
+
+<div style="text-align:center;">
+  <img src="./task2/images/ex_2c_avg_packetDelay.jpg" alt="Exercise 2.a Average Packet Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
+</div>
+
+<div style="text-align:center;">
+  <img src="./task2/images/ex_2c_avg_queuingDelay.jpg" alt="Exercise 2.a Average Queuing Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
+</div>
+
+### Conclusion:
+
+
+### Matlab Script code and output
+
+```matlab
+N = [10,20,30,40]; % Mbps
+K = 1500;
+
+w_data = zeros(size(N));
+wq_data = zeros(size(N));
+w_voip = zeros(size(N));
+wq_voip = zeros(size(N));
+
+for i=1:length(N)
+    capacity = 10*10^6;
+    flow = N(i);
+    fprintf('For N=%d:\n', flow);
+
+    % higher priority
+    [Esvoip, Esvoip2] = calculate_voip_meanStime(capacity, flow);  
+    p1 = K * Esvoip;
+    Wq1 = (K * Esvoip2) / (2 * (1 - p1));
+    W1 = Wq1 + Esvoip;% W = Wq + E[s]
+    fprintf('\tWq voip = %.4f ms\n', Wq1*1000);
+    fprintf('\tW voip = %.4f ms\n', W1*1000);
+    wq_voip(i) = Wq1*1000;
+    w_voip(i) = W1*1000;
+
+    % lower priority
+    [Esdata, Esdata2] = calculate_data_meanStime(capacity, flow);
+    p2 = K * Esdata;
+    Wq2 = (K * Esdata2) / (2 * (1 - p1) * (1 - p1 - p2));
+    W2 = Wq2 + Esdata;% W = Wq + E[s]
+    fprintf('\tWq data = %.4f ms\n', Wq2*1000);
+    fprintf('\tW data = %.4f ms\n', W2*1000);
+    wq_data(i) = Wq2*1000;
+    w_data(i) = W2*1000;
+
+end
+
+(...)
+
+function [Es, Es2] = calculate_voip_meanStime(capacity, flows)
+    indiv_prob = 1/(130-110);
+    avg_bytes = sum((110:130)*(indiv_prob));
+    avg_time = avg_bytes * 8 / capacity;
+ 
+    %fprintf("\tAvg voip packet size is: %.2f Bytes\n", avg_bytes);
+    %fprintf("\tAvg voip packet trans. time is: %.2e seconds\n", avg_time);
+    x = 110:130;
+    s = (x .* 8) ./ (capacity);
+    s2 = (x .* 8) ./ (capacity);
+    for i = 1:length(x)
+        % Also account for the impact of VoIP flows in the mean service time
+        s(i) = s(i) * indiv_prob * (1 - 1/flows);
+        s2(i) = s2(i)^2 * indiv_prob * (1 - 1/flows);;
+    end
+    
+    Es = sum(s);
+    Es2 = sum(s2);
+
+    %fprintf('\tE[S] voip = %.2e seconds\n', Es);
+    %fprintf('\tE[S2] voip = %.2e seconds\n', Es2);
+end
+
+function [Es, Es2] = calculate_data_meanStime(capacity,flows)
+    prob_left = (1 - (0.19 + 0.23 + 0.17)) / ((109 - 65 + 1) + (1517 - 111 + 1));
+    avg_bytes = 0.19*64 + 0.23*110 + 0.17*1518 + sum((65:109)*(prob_left)) + sum((111:1517)*(prob_left));
+    avg_time = avg_bytes * 8 / capacity;
+ 
+    %fprintf("\tAvg data packet size is: %.2f Bytes\n", avg_bytes);
+    %fprintf("\tAvg data packet trans. time is: %.2e seconds\n", avg_time);
+    x = 64:1518;
+    s = (x .* 8) ./ (capacity);
+    s2 = (x .* 8) ./ (capacity);
+    for i = 1:length(x)
+        if i == 1
+            s(i) = s(i) * 0.19;
+            s2(i) = s2(i)^2 * 0.19;
+        elseif i == 110-64+1
+            s(i) = s(i) * 0.23;
+            s2(i) = s2(i)^2 * 0.23;
+        elseif i == 1518-64+1
+            s(i) = s(i) * 0.17;
+            s2(i) = s2(i)^2 * 0.17;
+        else
+            s(i) = s(i) * prob_left;
+            s2(i) = s2(i)^2 * prob_left;
+        end
+        % Account for the impact of VoIP flows in the mean service time
+        s(i) = s(i) * (1 - 1/flows);  
+        s2(i) = s2(i) * (1 - 1/flows);  
+    end
+    
+    Es = sum(s);
+    Es2 = sum(s2);
+
+    %fprintf('\tE[S] data = %.2e seconds\n', Es);
+    %fprintf('\tE[S2] data = %.2e seconds\n', Es2);
+end
+```
