@@ -63,7 +63,6 @@ For C=20Mdps, the Av. Packet Delay (ms)  = 4.35e-01 +- 1.31e-03
 For C=30Mdps, the Av. Packet Delay (ms)  = 2.31e-01 +- 4.41e-04
 For C=40Mdps, the Av. Packet Delay (ms)  = 1.57e-01 +- 2.52e-04
 ```
-
 <div style="page-break-after: always"></div>
 
 ### Conclusion
@@ -72,7 +71,6 @@ The results clearly indicate that increasing/doubling the Link Capacity will lea
 It's extremely recommended for the link to have at least 20 Mbps of capacity, since the we can get more than 8 times lower packet delay compared to a 10 Mbps link. However, something should still be said about the law of diminishing returns, because after the 20 Mbps of link capacity the values are lower, but nowhere near the reduction noticed before. If a network operator wanted advice on the cables to buy and each upgraded link capacity costed double the price, clearly anything but essential services (and even then...) should use a 20 Mbps link.
 In summary, the effect of increasing link capacity and it's impact in average packet delay isn't linear. Smaller increases in capacity have more substantial impact when the link is initially congested, but the improvement slow down as higher link capacities are reached.
 
-<div style="page-break-after: always"></div>
 
 ## Exercise 1.b
 
@@ -96,7 +94,6 @@ Before calculating the Average Packet delay for all link capacities, we need to 
   $$
 * $\lambda = 1800$pps (Packets Per Second)
 
-<div style="page-break-after: always"></div>
 
 With this formulas in mind and with the help of Matlab, we'll proceed in calculating the Average Packet delay for each Capacity:
 
@@ -159,7 +156,6 @@ $$
 \equiv W =  0.1576 \text{ ms} = 1.576 \times 10^{-1} \text{ ms}
 $$
 
-<div style="page-break-after: always"></div>
 
 ### Conclusion:
 
@@ -356,7 +352,6 @@ The experiment evaluated the performance of a communication system with specific
 
 The packet arrival rate (λ) has a substantial impact on the performance of the communication system. As λ increases, it results in higher average packet delay, although there is an initial boost in throughput. At moderate arrival rates (λ = 1000 to 1600 pps), the system operates efficiently, demonstrating low delay and high throughput. However, at very high arrival rates (λ = 1900 pps), the system encounters significant delays and reaches its throughput limit, indicating saturation. Consequently, optimizing the packet arrival rate becomes crucial to strike a delicate balance between bandwidth efficiency and service quality in communication systems.
 
-<div style="page-break-after: always"></div>
 
 ## Exercise 1.d
 
@@ -449,7 +444,6 @@ Average Throughput for Simulator2 with lambda = 1900: 8.58 +- 0.01
   <img src="./task1/images/ex_1d.jpg" alt="Exercise 1.d image" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
 </div>
 
-<div style="page-break-after: always"></div>
 
 ### Conclusion
 
@@ -467,9 +461,6 @@ In experiment 1.d, the focus was on investigating the impact of Bit Error Rate (
 - For λ = 1000 pps in Simulator2, the average throughput was 4.53 Mbps, while in Simulator1, it was 4.96 Mbps. The lower throughput in Simulator2 is expected, as a higher BER (10^-5) results in more packet loss and retransmissions.
   As λ increased to 1300 pps, Simulator2 maintained a lower throughput (5.89 Mbps) compared to Simulator1 (6.44 Mbps), reflecting the impact of BER on throughput.
 - At λ = 1600 pps, Simulator2 still had lower throughput (7.24 Mbps) compared to Simulator1 (7.93 Mbps).
-
-<div style="page-break-after: always"></div>
-
 - At λ = 1900 pps, Simulator2's throughput (8.58 Mbps) surpassed that of Simulator1 (9.43 Mbps), suggesting that at very high arrival rates, the lower BER in Simulator2 mitigated some of the effects of congestion.
 
 **The Bit Error Rate (BER) plays a significant role in determining the performance of a communication system, especially in scenarios with higher packet loss.**
@@ -483,7 +474,6 @@ However, as the packet arrival rate increases, the impact of BER becomes more pr
 For very high arrival rates, **the lower BER in Simulator2 led to slightly better throughput compared to Simulator1, indicating that a lower BER can mitigate congestion effects to some extent.**
 In summary, these results emphasize the importance of considering BER when designing and evaluating communication systems, particularly in scenarios with high packet loss and congestion. **Lower BER can lead to improved performance in such situations, but it may have limited benefits at moderate arrival rates.**
 
-<div style="page-break-after: always"></div>
 
 ## Exercise 1.e
 
@@ -506,6 +496,7 @@ function out= GeneratePacketSize()
     end
 end
 ```
+<div style="page-break-after: always"></div>
 
 ### Result
 
@@ -530,15 +521,15 @@ Average Packet Delay for Simulator2 with lambda = 1900: 0.48 +- 0.03
 Average Throughput for Simulator2 with lambda = 1900: 4.51 +- 0.20
 ```
 
-<div style="text-align:center;">
-  <img src="./task1/images/ex_1e-c.jpg" alt="Exercise 1.e value of 1.c" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
+<div style="display: flex; justify-content: center;">
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task1/images/ex_1e-c.jpg" alt="Exercise 1.e value of 1.c" style="max-width: 100%; height: auto;">
+  </div>
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task1/images/ex_1e-d.jpg" alt="Exercise 1.e value of 1.d" style="max-width: 100%; height: auto;">
+  </div>
 </div>
 
-<div style="text-align:center;">
-  <img src="./task1/images/ex_1e-d.jpg" alt="Exercise 1.e value of 1.d" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
-</div>
-
-<div style="page-break-after: always"></div>
 
 ### Conclusion
 
@@ -556,7 +547,6 @@ In experiment 1.e, both simulators were modified to consider a range of packet s
 ##### Simulator2
 
 - In Simulator2, the average packet delay exhibited similar trends. For all tested arrival rates, the delay values in Simulator2 were slightly lower compared to those in Simulator1. This suggests that the new packet size statistics had a beneficial impact on reducing packet delay in Simulator2.
-<div style="page-break-after: always"></div>
 
 #### Average Throughput
 
@@ -576,7 +566,6 @@ The introduction of a new packet size distribution, with a higher probability of
 However, the new packet size distribution had a **negative impact on throughput** in both simulators for all tested arrival rates. The reduced throughput is likely due to increased contention and higher collision rates resulting from smaller packet sizes. Smaller packets consume a larger portion of the channel's capacity, leading to decreased overall throughput.
 
 In summary, the results highlight the trade-off between average packet delay and throughput in a network with varying packet sizes. Careful consideration of packet size distribution is essential when designing communication systems to achieve the desired balance between delay and throughput.
-<div style="page-break-after: always"></div>
 
 ## Exercise 2.a
 
@@ -690,18 +679,20 @@ For n=40:
 	VoIP flows, the AQD of VoIP (ms)  = 5.49e+00 +- 2.59e-01
 ```
 
-<div style="text-align:center;">
-  <img src="./task2/images/ex_2a_avg_packetDelay.jpg" alt="Exercise 2.a Average Packet Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
+<div style="display: flex; justify-content: center;">
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task2/images/ex_2a_avg_packetDelay.jpg" alt="Exercise 2.a Average Packet Delay" style="max-width: 100%; height: auto;">
+  </div>
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task2/images/ex_2a_avg_queuingDelay.jpg" alt="Exercise 2.a Average Queuing Delay" style="max-width: 100%; height: auto;">
+  </div>
 </div>
 
-<div style="text-align:center;">
-  <img src="./task2/images/ex_2a_avg_queuingDelay.jpg" alt="Exercise 2.a Average Queuing Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
-</div>
+
 
 As we can see by the terminal output and the images, Both **Average Packet Delay** and **Average Queuing Delay** show an increase in time, as the number of VoIP flows increases. This is due to the higher traffic generated by the increasing VoIP flows, competing for more resources of a limited bandwidth/link capacity. Since Simulator 3 doesn't implement priorities with the Data and VoIP packets, both types of packets have the same treatment in the FIFO queue. Which means that as observed in the images, the delays are similar for both of them.
 This results indicate the need to establish priorities in the FIFO queue, since generally the VoIP should have lower delays than other packet types, given the higher time-sensitivity of the data. This same situation will be approached in the following exercise.
 
-<div style="page-break-after: always"></div>
 
 ## Exercise 2.b
 
@@ -741,19 +732,18 @@ For n=40:
 	VoIP flows, the AQD of VoIP (ms)  = 4.39e-01 +- 1.26e-03
 ```
 
-<div style="text-align:center;">
-  <img src="./task2/images/ex_2b_avg_packetDelay.jpg" alt="Exercise 2.a Average Packet Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
-</div>
-
-<div style="text-align:center;">
-  <img src="./task2/images/ex_2b_avg_queuingDelay.jpg" alt="Exercise 2.a Average Queuing Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
+<div style="display: flex; justify-content: center;">
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task2/images/ex_2b_avg_packetDelay.jpg" alt="Exercise 2.b Average Packet Delay" style="max-width: 100%; height: auto;">
+  </div>
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task2/images/ex_2b_avg_queuingDelay.jpg" alt="Exercise 2.b Average Queuing Delay" style="max-width: 100%; height: auto;">
+  </div>
 </div>
 
 As we can see by the terminal output and the images, the Simulator 4 with the introduction of priority for **VoIP** over **data** packets clearly improves the **Average Packet Delay** (APD) and **Average Queuing Delay** (AQD) of VoIP packets. This results in improvements ranging from 80 to 93% for the Queuing of **VoIP** packets, compared to a solution without priority. Also interesting is the stability of the system, independently of the number of VoIP flows, to maintain constant APD and AQD delays for **VoIP**.
 However, the most interesting fact was that using priority for VoIP packets didn't result in a noticeable increase of APD and AQD for **data** packets, compared to a solution without priorities, showing that the overall impact in the system is minimal.
 Concluding, using priorities for certain packet types (VoIP, real-time trading, emergency services), has a significant impact on reducing the delays for those systems, even under increased network load, but doesn't impact the other services as to cancel all the previous gains. This fact shows why this types of approaches are so widely used around the world in guaranteeing Quality of Service (QoS).
-
-<div style="page-break-after: always"></div>
 
 ## Exercise 2.c
 
@@ -813,7 +803,9 @@ For $N=10$:
   = 
   $$
   $$
-  =\frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}
+  =\frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  $$
+  $$
   = 1.8638 \text{ ms}
   $$
 
@@ -825,8 +817,6 @@ For $N=10$:
   = 2.3102 \text{ ms}
   $$
 
-<div style="page-break-after: always"></div>
-
   For $N=20$:
 
 - VoIP flows, the APD of data (ms):
@@ -836,6 +826,7 @@ For $N=10$:
   = \frac{1500 \times E[S_{data}]}{2 \cdot (1 - 1500 \times E[S_{data}])}
   = 0.0081 \text{ ms}
   $$
+<div style="page-break-after: always"></div>
 
 - VoIP flows, the APD of VoIP (ms):
 
@@ -854,6 +845,7 @@ For $N=10$:
   $$
   $$
   = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  $$
   $$
   = 2.5788 \text{ ms}
   $$
@@ -888,10 +880,10 @@ For $N=30$:
 - VoIP flows, the AQD of data (ms):
 
   $$
-  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}
+  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}=
   $$
   $$
-  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}
+  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
   $$
   $$
   = 2.9235 \text{ ms}
@@ -905,7 +897,6 @@ For $N=30$:
   = 3.4030 \text{ ms}
   $$
   
-<div style="page-break-after: always"></div>
 
 For $N=40$:
 
@@ -928,8 +919,12 @@ For $N=40$:
 - VoIP flows, the AQD of data (ms):
 
   $$
-  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}
-  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}
+  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}=
+  $$
+  $$
+  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  $$
+  $$
   = 3.1263 \text{ ms}
   $$
 
@@ -969,15 +964,15 @@ For N=40:
 	W data = 3.6099 ms
 ```
 
-<div style="text-align:center;">
-  <img src="./task2/images/ex_2c_avg_packetDelay.jpg" alt="Exercise 2.a Average Packet Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
+<div style="display: flex; justify-content: center;">
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task2/images/ex_2c_avg_packetDelay.jpg" alt="Exercise 2.c Average Packet Delay" style="max-width: 100%; height: auto;">
+  </div>
+  <div style="flex: 50%; text-align: center;">
+    <img src="./task2/images/ex_2c_avg_queuingDelay.jpg" alt="Exercise 2.c Average Queuing Delay" style="max-width: 100%; height: auto;">
+  </div>
 </div>
 
-<div style="text-align:center;">
-  <img src="./task2/images/ex_2c_avg_queuingDelay.jpg" alt="Exercise 2.a Average Queuing Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
-</div>
-
-<div style="page-break-after: always"></div>
 
 ### Conclusion:
 In experiment 2.b, simulations were conducted using Simulator4, which prioritizes the VoIP service over the data service. The objective was to obtain results for the average packet delay (APD) and average queuing delay (AQD) for both data and VoIP packets across different numbers of VoIP flows (n). Subsequently, in experiment 2.c, theoretical values for average packet delay were derived using a priority-enabled M/G/1 queue model.
