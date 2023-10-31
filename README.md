@@ -698,7 +698,7 @@ This results indicate the need to establish priorities in the FIFO queue, since 
 
 ### Modifications or insertions in the code
 
-THe changes needed for the new metrics have already been documented in exercise 2.a, with them just being altered in Simulator 4 and the new script calling the Simulator 4 instead of the 3.
+The changes needed for the new metrics have already been documented in exercise 2.a, with them just being altered in Simulator 4 and the new script calling the Simulator 4 instead of the 3.
 
 ### Result
 
@@ -803,7 +803,7 @@ For $N=10$:
   = 
   $$
   $$
-  =\frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  =\frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}]) \cdot (1 - 1500 \times E[S_{voip}] - 1500 \times E[S_{data}])}=
   $$
   $$
   = 1.8638 \text{ ms}
@@ -844,7 +844,7 @@ For $N=10$:
   W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}=
   $$
   $$
-  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  = \frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}]) \cdot (1 - 1500 \times E[S_{voip}] - 1500 \times E[S_{data}])}=
   $$
   $$
   = 2.5788 \text{ ms}
@@ -883,7 +883,7 @@ For $N=30$:
   W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}=
   $$
   $$
-  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  = \frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}]) \cdot (1 - 1500 \times E[S_{voip}] - 1500 \times E[S_{data}])}=
   $$
   $$
   = 2.9235 \text{ ms}
@@ -922,7 +922,7 @@ For $N=40$:
   W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}=
   $$
   $$
-  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  = \frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}]) \cdot (1 - 1500 \times E[S_{voip}] - 1500 \times E[S_{data}])}=
   $$
   $$
   = 3.1263 \text{ ms}
