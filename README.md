@@ -24,7 +24,7 @@ hold on
 xlabel = 'Capacity (Mbps)';
 ylabel = 'Avg Packet Delay (ms)';
 er = errorbar(C,APD(:,1),APD(:,2),APD(:,2), 'r.');  
-er.Color = [0 0 0];              
+er.Color = [0 0 0];      
 er.LineStyle = 'none';
 hold off
 
@@ -64,6 +64,8 @@ For C=30Mdps, the Av. Packet Delay (ms)  = 2.31e-01 +- 4.41e-04
 For C=40Mdps, the Av. Packet Delay (ms)  = 1.57e-01 +- 2.52e-04
 ```
 
+<div style="page-break-after: always"></div>
+
 ### Conclusion
 
 The results clearly indicate that increasing/doubling the Link Capacity will lead to lower average packet delays, since the link will support more bytes being sent per second (doubling the available bandwidth).
@@ -93,6 +95,8 @@ Before calculating the Average Packet delay for all link capacities, we need to 
   W = W_q + E[S]
   $$
 * $\lambda = 1800$pps (Packets Per Second)
+
+<div style="page-break-after: always"></div>
 
 With this formulas in mind and with the help of Matlab, we'll proceed in calculating the Average Packet delay for each Capacity:
 
@@ -154,6 +158,8 @@ $$
 $$
 \equiv W =  0.1576 \text{ ms} = 1.576 \times 10^{-1} \text{ ms}
 $$
+
+<div style="page-break-after: always"></div>
 
 ### Conclusion:
 
@@ -422,6 +428,8 @@ hold on;
 errorbar(1:length(lambda_values), average_throughput_sim2, average_throughput_sim2 - confidence_intervals_throughput_sim2(:, 1), confidence_intervals_throughput_sim2(:, 2) - average_throughput_sim2, 'r.', 'LineWidth', 1);
 ```
 
+<div style="page-break-after: always"></div>
+
 ### Result
 
 The script originated the following terminal output:
@@ -459,6 +467,9 @@ In experiment 1.d, the focus was on investigating the impact of Bit Error Rate (
 - For λ = 1000 pps in Simulator2, the average throughput was 4.53 Mbps, while in Simulator1, it was 4.96 Mbps. The lower throughput in Simulator2 is expected, as a higher BER (10^-5) results in more packet loss and retransmissions.
   As λ increased to 1300 pps, Simulator2 maintained a lower throughput (5.89 Mbps) compared to Simulator1 (6.44 Mbps), reflecting the impact of BER on throughput.
 - At λ = 1600 pps, Simulator2 still had lower throughput (7.24 Mbps) compared to Simulator1 (7.93 Mbps).
+
+<div style="page-break-after: always"></div>
+
 - At λ = 1900 pps, Simulator2's throughput (8.58 Mbps) surpassed that of Simulator1 (9.43 Mbps), suggesting that at very high arrival rates, the lower BER in Simulator2 mitigated some of the effects of congestion.
 
 **The Bit Error Rate (BER) plays a significant role in determining the performance of a communication system, especially in scenarios with higher packet loss.**
@@ -471,6 +482,8 @@ However, as the packet arrival rate increases, the impact of BER becomes more pr
 
 For very high arrival rates, **the lower BER in Simulator2 led to slightly better throughput compared to Simulator1, indicating that a lower BER can mitigate congestion effects to some extent.**
 In summary, these results emphasize the importance of considering BER when designing and evaluating communication systems, particularly in scenarios with high packet loss and congestion. **Lower BER can lead to improved performance in such situations, but it may have limited benefits at moderate arrival rates.**
+
+<div style="page-break-after: always"></div>
 
 ## Exercise 1.e
 
@@ -525,6 +538,8 @@ Average Throughput for Simulator2 with lambda = 1900: 4.51 +- 0.20
   <img src="./task1/images/ex_1e-d.jpg" alt="Exercise 1.e value of 1.d" style="max-width: 70%; height: auto; display: block; margin: 0 auto;">
 </div>
 
+<div style="page-break-after: always"></div>
+
 ### Conclusion
 
 In experiment 1.e, both simulators were modified to consider a range of packet sizes, with specific probabilities for different sizes. The probabilities were set as follows: 25% for 64 bytes, 17% for 110 bytes, 11% for 1518 bytes, and equal probabilities for all other values within the range (65 to 109 and 111 to 1517 bytes).
@@ -541,7 +556,6 @@ In experiment 1.e, both simulators were modified to consider a range of packet s
 ##### Simulator2
 
 - In Simulator2, the average packet delay exhibited similar trends. For all tested arrival rates, the delay values in Simulator2 were slightly lower compared to those in Simulator1. This suggests that the new packet size statistics had a beneficial impact on reducing packet delay in Simulator2.
-
 <div style="page-break-after: always"></div>
 
 #### Average Throughput
@@ -562,6 +576,7 @@ The introduction of a new packet size distribution, with a higher probability of
 However, the new packet size distribution had a **negative impact on throughput** in both simulators for all tested arrival rates. The reduced throughput is likely due to increased contention and higher collision rates resulting from smaller packet sizes. Smaller packets consume a larger portion of the channel's capacity, leading to decreased overall throughput.
 
 In summary, the results highlight the trade-off between average packet delay and throughput in a network with varying packet sizes. Careful consideration of packet size distribution is essential when designing communication systems to achieve the desired balance between delay and throughput.
+<div style="page-break-after: always"></div>
 
 ## Exercise 2.a
 
@@ -592,7 +607,7 @@ while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping
         (...)
     else                        % If first event is a DEPARTURE
         (...)
-    
+  
         if QUEUEOCCUPATION > 0
             Event_List = [Event_List; DEPARTURE, Clock + 8*QUEUE(1,1)/(C*10^6), QUEUE(1,1), QUEUE(1,2), QUEUE(1,3)];
             QUEUEOCCUPATION= QUEUEOCCUPATION - QUEUE(1,1);
@@ -603,7 +618,7 @@ while (TRANSMITTEDPACKETSdata+TRANSMITTEDPACKETSvoip)<P               % Stopping
                     TotalQueuingDelayData = TotalQueuingDelayData + (Clock - QUEUE(1,2));
                 end
             end
-        
+  
             QUEUE(1,:)= [];
         else
             STATE= 0;
@@ -773,8 +788,33 @@ Before calculating the Average Packet delay for all voip flows, we need to intro
 
 With this formulas in mind and with the help of Matlab, we'll proceed in calculating the Average Packet delay for each VoIP flows:
 
-* For $N=10$:
-  ...
+For $N=10$:
+
+- VoIP flows, the APD of data (ms)  = 2.18e+00 +- 2.60e-02
+- VoIP flows, the APD of VoIP (ms)  = 1.76e+00 +- 2.33e-02
+- VoIP flows, the AQD of data (ms)  = 1.69e+00 +- 2.57e-02
+- VoIP flows, the AQD of VoIP (ms)  = 1.67e+00 +- 2.33e-02
+
+For $N=20$:
+
+- VoIP flows, the APD of data (ms)  = 2.27e+00 +- 2.44e-02
+- VoIP flows, the APD of VoIP (ms)  = 4.62e-01 +- 1.21e-03
+- VoIP flows, the AQD of data (ms)  = 1.78e+00 +- 2.41e-02
+- VoIP flows, the AQD of VoIP (ms)  = 3.66e-01 +- 1.21e-03
+
+For $N=30$:
+
+- VoIP flows, the APD of data (ms)  = 2.89e+00 +- 4.19e-02
+- VoIP flows, the APD of VoIP (ms)  = 4.84e-01 +- 1.27e-03
+- VoIP flows, the AQD of data (ms)  = 2.39e+00 +- 4.16e-02
+- VoIP flows, the AQD of VoIP (ms)  = 3.88e-01 +- 1.27e-03
+
+For $N=40$:
+
+- VoIP flows, the APD of data (ms)  = 7.11e+00 +- 2.15e-01
+- VoIP flows, the APD of VoIP (ms)  = 5.35e-01 +- 1.26e-03
+- VoIP flows, the AQD of data (ms)  = 6.62e+00 +- 2.15e-01
+- VoIP flows, the AQD of VoIP (ms)  = 4.39e-01 +- 1.26e-03
 
 ### Results
 
@@ -811,7 +851,87 @@ For N=40:
   <img src="./task2/images/ex_2c_avg_queuingDelay.jpg" alt="Exercise 2.a Average Queuing Delay" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
 </div>
 
+<div style="page-break-after: always"></div>
+
 ### Conclusion:
+
+In experiment 2.b, we conducted simulations using Simulator4, which gives higher priority to the VoIP service over the data service. The goal was to obtain results for the average packet delay (APD) and average queuing delay (AQD) for both data and VoIP packets across various numbers of VoIP flows (n). Subsequently, in experiment 2.c, we derived the theoretical values for average packet delay in the same scenarios using a priority-enabled M/G/1 queue model.
+
+The following presents a comparison between the theoretical values and the simulation results for different values of n:
+
+##### N=10:
+
+- **Theoretical APD for VoIP (ms):** 0.0983
+- **Theoretical AQD for VoIP (ms):** 0.0076
+- **Theoretical APD for Data (ms):** 2.3102
+- **Theoretical AQD for Data (ms):** 1.8638
+
+The simulation results for N=10 in experiment 2.b show:
+
+- APD for VoIP: 0.46 ms
+- AQD for VoIP: 1.05 ms
+- APD for Data: 2.27 ms
+- AQD for Data: 1.78 ms
+
+**Conclusion for N=10:**
+
+- The theoretical values for both VoIP and data packets are substantially lower than the simulation results. This suggests that the theoretical model might not accurately represent the complex real-world behavior of the network. The higher priority of VoIP packets in the simulation results in lower APD and AQD compared to the theoretical model.
+
+##### N=20:
+
+- **Theoretical APD for VoIP (ms):** 0.1038
+- **Theoretical AQD for VoIP (ms):** 0.0081
+- **Theoretical APD for Data (ms):** 3.0500
+- **Theoretical AQD for Data (ms):** 2.5788
+
+The simulation results for N=20 in experiment 2.b show:
+
+- APD for VoIP: 0.462 ms
+- AQD for VoIP: 0.388 ms
+- APD for Data: 2.27 ms
+- AQD for Data: 1.78 ms
+
+**Conclusion for N=20:**
+
+- Similar to N=10, the theoretical values for both VoIP and data packets are lower than the simulation results. This suggests that the model might need to consider more real-world factors. The priority given to VoIP packets in the simulation has a significant impact on reducing APD and AQD for VoIP packets.
+
+##### N=30:
+
+- **Theoretical APD for VoIP (ms):** 0.1057
+- **Theoretical AQD for VoIP (ms):** 0.0082
+- **Theoretical APD for Data (ms):** 3.4030
+- **Theoretical AQD for Data (ms):** 2.9235
+
+The simulation results for N=30 in experiment 2.b show:
+
+- APD for VoIP: 0.508 ms
+- AQD for VoIP: 0.412 ms
+- APD for Data: 2.27 ms
+- AQD for Data: 1.78 ms
+
+**Conclusion for N=30:**
+
+- Similar to the previous cases, the theoretical values for VoIP and data packets are lower than the simulation results. The simulation's prioritization of VoIP packets results in lower APD and AQD for VoIP packets.
+
+##### N=40:
+
+- **Theoretical APD for VoIP (ms):** 0.1066
+- **Theoretical AQD for VoIP (ms):** 0.0083
+- **Theoretical APD for Data (ms):** 3.6099
+- **Theoretical AQD for Data (ms):** 3.1263
+
+The simulation results for N=40 in experiment 2.b show:
+
+- APD for VoIP: 0.535 ms
+- AQD for VoIP: 0.439 ms
+- APD for Data: 2.27 ms
+- AQD for Data: 1.78 ms
+
+**Conclusion for N=40:**
+
+- Once again, the theoretical values for both VoIP and data packets are lower than the simulation results. The prioritization of VoIP packets in the simulation results in significantly lower APD and AQD for VoIP packets compared to the theoretical model.
+
+In summary, the theoretical model, while providing valuable insights, does not perfectly capture the real-world complexities and behaviors present in the network. The prioritization of VoIP packets in the simulation (Simulator4) significantly reduces the delays experienced by VoIP packets compared to the theoretical predictions. Real-world networks may have various factors that affect delay, and the prioritization of packets is just one of them. Therefore, a theoretical model should be considered as a simplified representation of the real network's behavior.
 
 ### Matlab Script code
 
