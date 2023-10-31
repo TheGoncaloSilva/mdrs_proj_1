@@ -790,31 +790,157 @@ With this formulas in mind and with the help of Matlab, we'll proceed in calcula
 
 For $N=10$:
 
-- VoIP flows, the APD of data (ms)  = 2.18e+00 +- 2.60e-02
-- VoIP flows, the APD of VoIP (ms)  = 1.76e+00 +- 2.33e-02
-- VoIP flows, the AQD of data (ms)  = 1.69e+00 +- 2.57e-02
-- VoIP flows, the AQD of VoIP (ms)  = 1.67e+00 +- 2.33e-02
+- VoIP flows, the APD of data (ms):
 
-For $N=20$:
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{data}]}{2 \cdot (1 - 1500 \times E[S_{data}])}
+  = 0.0076 \text{ ms}
+  $$
 
-- VoIP flows, the APD of data (ms)  = 2.27e+00 +- 2.44e-02
-- VoIP flows, the APD of VoIP (ms)  = 4.62e-01 +- 1.21e-03
-- VoIP flows, the AQD of data (ms)  = 1.78e+00 +- 2.41e-02
-- VoIP flows, the AQD of VoIP (ms)  = 3.66e-01 +- 1.21e-03
+- VoIP flows, the APD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}]}{2 \cdot (1 - 1500 \times E[S_{voip}])}
+  = 0.0983 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of data (ms):
+
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}
+  = 
+  $$
+  $$
+  =\frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}
+  = 1.8638 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}])}
+  = 2.3102 \text{ ms}
+  $$
+
+<div style="page-break-after: always"></div>
+
+  For $N=20$:
+
+- VoIP flows, the APD of data (ms):
+
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{data}]}{2 \cdot (1 - 1500 \times E[S_{data}])}
+  = 0.0081 \text{ ms}
+  $$
+
+- VoIP flows, the APD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}]}{2 \cdot (1 - 1500 \times E[S_{voip}])}=
+  $$
+  $$
+  = 0.1038 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of data (ms):
+
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}=
+  $$
+  $$
+  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}=
+  $$
+  = 2.5788 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}])}
+  = 3.0500 \text{ ms}
+  $$
+
 
 For $N=30$:
 
-- VoIP flows, the APD of data (ms)  = 2.89e+00 +- 4.19e-02
-- VoIP flows, the APD of VoIP (ms)  = 4.84e-01 +- 1.27e-03
-- VoIP flows, the AQD of data (ms)  = 2.39e+00 +- 4.16e-02
-- VoIP flows, the AQD of VoIP (ms)  = 3.88e-01 +- 1.27e-03
+- VoIP flows, the APD of data (ms):
+
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{data}]}{2 \cdot (1 - 1500 \times E[S_{data}])}
+  = 0.0082 \text{ ms}
+  $$
+
+- VoIP flows, the APD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}]}{2 \cdot (1 - 1500 \times E[S_{voip}])}
+  = 0.1057 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of data (ms):
+
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}
+  $$
+  $$
+  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}
+  $$
+  $$
+  = 2.9235 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}])}
+  = 3.4030 \text{ ms}
+  $$
+  
+<div style="page-break-after: always"></div>
 
 For $N=40$:
 
-- VoIP flows, the APD of data (ms)  = 7.11e+00 +- 2.15e-01
-- VoIP flows, the APD of VoIP (ms)  = 5.35e-01 +- 1.26e-03
-- VoIP flows, the AQD of data (ms)  = 6.62e+00 +- 2.15e-01
-- VoIP flows, the AQD of VoIP (ms)  = 4.39e-01 +- 1.26e-03
+- VoIP flows, the APD of data (ms):
+
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{data}]}{2 \cdot (1 - 1500 \times E[S_{data}])}
+  = 0.0083 \text{ ms}
+  $$
+
+- VoIP flows, the APD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}]}{2 \cdot (1 - 1500 \times E[S_{voip}])}
+  = 0.1066 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of data (ms):
+
+  $$
+  W_{Qdata} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S]) \cdot (1 - \lambda \cdot E[S] - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{data}^2]}{2 \cdot (1 - 1500 \times E[S_{data}]) \cdot (1 - 1500 \times E[S_{data}] - 1500 \times E[S_{data}])}
+  = 3.1263 \text{ ms}
+  $$
+
+- VoIP flows, the AQD of VoIP (ms):
+
+  $$
+  W_{Qvoip} = \frac{\lambda \cdot E[S^2]}{2 \cdot (1 - \lambda \cdot E[S])}
+  = \frac{1500 \times E[S_{voip}^2]}{2 \cdot (1 - 1500 \times E[S_{voip}])}
+  = 3.6099 \text{ ms}
+  $$
+
 
 ### Results
 
@@ -854,84 +980,13 @@ For N=40:
 <div style="page-break-after: always"></div>
 
 ### Conclusion:
+In experiment 2.b, simulations were conducted using Simulator4, which prioritizes the VoIP service over the data service. The objective was to obtain results for the average packet delay (APD) and average queuing delay (AQD) for both data and VoIP packets across different numbers of VoIP flows (n). Subsequently, in experiment 2.c, theoretical values for average packet delay were derived using a priority-enabled M/G/1 queue model.
 
-In experiment 2.b, we conducted simulations using Simulator4, which gives higher priority to the VoIP service over the data service. The goal was to obtain results for the average packet delay (APD) and average queuing delay (AQD) for both data and VoIP packets across various numbers of VoIP flows (n). Subsequently, in experiment 2.c, we derived the theoretical values for average packet delay in the same scenarios using a priority-enabled M/G/1 queue model.
+The theoretical values for both VoIP and data packets are generally lower than the simulation results for different numbers of VoIP flows. This observation implies that the theoretical model might not fully capture the real-world intricacies of the network. The prioritization of VoIP packets in the simulation significantly reduces APD and AQD for VoIP packets compared to the theoretical model.
 
-The following presents a comparison between the theoretical values and the simulation results for different values of n:
+The theoretical and simulation results demonstrate a correlation in values, where VoIP values remain relatively stable, while data values are consistently disadvantaged, albeit not excessively. This indicates that, while the theoretical model may not align perfectly with the simulation results, it does not undermine the overall conclusions. As noted earlier, the theoretical model provides valuable insights into network behavior, even if it is a simplified representation of reality.
 
-##### N=10:
-
-- **Theoretical APD for VoIP (ms):** 0.0983
-- **Theoretical AQD for VoIP (ms):** 0.0076
-- **Theoretical APD for Data (ms):** 2.3102
-- **Theoretical AQD for Data (ms):** 1.8638
-
-The simulation results for N=10 in experiment 2.b show:
-
-- APD for VoIP: 0.46 ms
-- AQD for VoIP: 1.05 ms
-- APD for Data: 2.27 ms
-- AQD for Data: 1.78 ms
-
-**Conclusion for N=10:**
-
-- The theoretical values for both VoIP and data packets are substantially lower than the simulation results. This suggests that the theoretical model might not accurately represent the complex real-world behavior of the network. The higher priority of VoIP packets in the simulation results in lower APD and AQD compared to the theoretical model.
-
-##### N=20:
-
-- **Theoretical APD for VoIP (ms):** 0.1038
-- **Theoretical AQD for VoIP (ms):** 0.0081
-- **Theoretical APD for Data (ms):** 3.0500
-- **Theoretical AQD for Data (ms):** 2.5788
-
-The simulation results for N=20 in experiment 2.b show:
-
-- APD for VoIP: 0.462 ms
-- AQD for VoIP: 0.388 ms
-- APD for Data: 2.27 ms
-- AQD for Data: 1.78 ms
-
-**Conclusion for N=20:**
-
-- Similar to N=10, the theoretical values for both VoIP and data packets are lower than the simulation results. This suggests that the model might need to consider more real-world factors. The priority given to VoIP packets in the simulation has a significant impact on reducing APD and AQD for VoIP packets.
-
-##### N=30:
-
-- **Theoretical APD for VoIP (ms):** 0.1057
-- **Theoretical AQD for VoIP (ms):** 0.0082
-- **Theoretical APD for Data (ms):** 3.4030
-- **Theoretical AQD for Data (ms):** 2.9235
-
-The simulation results for N=30 in experiment 2.b show:
-
-- APD for VoIP: 0.508 ms
-- AQD for VoIP: 0.412 ms
-- APD for Data: 2.27 ms
-- AQD for Data: 1.78 ms
-
-**Conclusion for N=30:**
-
-- Similar to the previous cases, the theoretical values for VoIP and data packets are lower than the simulation results. The simulation's prioritization of VoIP packets results in lower APD and AQD for VoIP packets.
-
-##### N=40:
-
-- **Theoretical APD for VoIP (ms):** 0.1066
-- **Theoretical AQD for VoIP (ms):** 0.0083
-- **Theoretical APD for Data (ms):** 3.6099
-- **Theoretical AQD for Data (ms):** 3.1263
-
-The simulation results for N=40 in experiment 2.b show:
-
-- APD for VoIP: 0.535 ms
-- AQD for VoIP: 0.439 ms
-- APD for Data: 2.27 ms
-- AQD for Data: 1.78 ms
-
-**Conclusion for N=40:**
-
-- Once again, the theoretical values for both VoIP and data packets are lower than the simulation results. The prioritization of VoIP packets in the simulation results in significantly lower APD and AQD for VoIP packets compared to the theoretical model.
-
-In summary, the theoretical model, while providing valuable insights, does not perfectly capture the real-world complexities and behaviors present in the network. The prioritization of VoIP packets in the simulation (Simulator4) significantly reduces the delays experienced by VoIP packets compared to the theoretical predictions. Real-world networks may have various factors that affect delay, and the prioritization of packets is just one of them. Therefore, a theoretical model should be considered as a simplified representation of the real network's behavior.
+This comprehensive analysis underscores the complexities of network simulations and emphasizes that a purely theoretical approach may not accurately capture the real-world dynamics. Further refinement of the theoretical model to account for various real-world factors could lead to improved alignment with simulation results.
 
 ### Matlab Script code
 
